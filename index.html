@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Euromonitor | Intune Implementation Tracker</title>
@@ -746,7 +745,7 @@
         }
     </style>
 </head>
-<body>
+<body class="edit-mode">
     <div id="app" class="app">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -759,22 +758,283 @@
 
             <div class="sidebar-scroll custom-scrollbar">
                 <nav id="sidebar-nav">
-                    <button onclick="showDashboard()" id="nav-dashboard" class="sidebar-item dashboard-nav active">
+                    <button onclick="showDashboard()" id="nav-dashboard" class="sidebar-item dashboard-nav">
                         <span>📈</span>
                         <span>Dashboard</span>
                     </button>
                     <div class="sidebar-label">Implementation Plan</div>
-                    <div id="days-list" class="days-list"></div>
+                    <div id="days-list" class="days-list"><button id="nav-day1-7" class="sidebar-item day-nav active">
+                    <div class="day-nav-left">
+                        <div class="status-dot partial"></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 1-7</span>
+                            <span class="day-nav-title">macOS Onboarding &amp; Compliance Readiness</span>
+                        </div>
+                    </div>
+                    <span class="day-count">11/14</span>
+                </button><button id="nav-day8" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot done"></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 8</span>
+                            <span class="day-nav-title">Intune Device Inventory &amp; Stale Device Assessment</span>
+                        </div>
+                    </div>
+                    <span class="day-count">3/3</span>
+                </button><button id="nav-day9" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 9</span>
+                            <span class="day-nav-title">Device Cleanup Rule Configuration</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/2</span>
+                </button><button id="nav-day10" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 10</span>
+                            <span class="day-nav-title">Configuration Profile Review</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day11" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 11</span>
+                            <span class="day-nav-title">Profile Cleanup &amp; Consolidation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button><button id="nav-day12" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 12</span>
+                            <span class="day-nav-title">Data Collection Policy Consolidation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day13" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 13</span>
+                            <span class="day-nav-title">USB &amp; Device Control Consolidation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day14" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 14</span>
+                            <span class="day-nav-title">NCSC Baseline Migration</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day15-21" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 15-21</span>
+                            <span class="day-nav-title">Cleanup Completion</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button><button id="nav-day22" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 22</span>
+                            <span class="day-nav-title">Endpoint Security Profile Design</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day23" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 23</span>
+                            <span class="day-nav-title">BitLocker Pilot Deployment</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/3</span>
+                </button><button id="nav-day24-28" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 24-28</span>
+                            <span class="day-nav-title">Security Policy Rollout</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day29-30" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 29-30</span>
+                            <span class="day-nav-title">GPO Auto-Enrollment Pilot</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/3</span>
+                </button><button id="nav-day31-35" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 31-35</span>
+                            <span class="day-nav-title">RBAC &amp; Administrative Security</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day36" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 36</span>
+                            <span class="day-nav-title">Delivery Optimization Global Rollout</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day37" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 37</span>
+                            <span class="day-nav-title">LAPS Production Rollout</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day38-45" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 38-45</span>
+                            <span class="day-nav-title">App Control &amp; Security Hardening</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day46" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 46</span>
+                            <span class="day-nav-title">GPO Migration Preparation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button><button id="nav-day47" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 47</span>
+                            <span class="day-nav-title">Device Management &amp; DNS GPO Migration</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day48-55" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 48-55</span>
+                            <span class="day-nav-title">GPO Migration</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/6</span>
+                </button><button id="nav-day56-60" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 56-60</span>
+                            <span class="day-nav-title">Migration Validation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day61-63" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 61-63</span>
+                            <span class="day-nav-title">Security Baseline Validation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day64-71" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 64-71</span>
+                            <span class="day-nav-title">Feature Expansion &amp; Stabilization</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day72" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 72</span>
+                            <span class="day-nav-title">SCCM Dependency Removal Planning</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day73" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 73</span>
+                            <span class="day-nav-title">Compliance Policy Enhancement Deployment</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day74" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 74</span>
+                            <span class="day-nav-title">Conditional Access Rationalization</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button><button id="nav-day75-77" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 75-77</span>
+                            <span class="day-nav-title">Mobile App Protection Policies</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button><button id="nav-day78" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Day 78</span>
+                            <span class="day-nav-title">Azure VPN Profile Validation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/4</span>
+                </button><button id="nav-day79-80" class="sidebar-item day-nav">
+                    <div class="day-nav-left">
+                        <div class="status-dot "></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">Days 79-80</span>
+                            <span class="day-nav-title">Entra ID Stale Device Remediation</span>
+                        </div>
+                    </div>
+                    <span class="day-count">0/5</span>
+                </button></div>
                 </nav>
             </div>
 
             <div class="sidebar-footer">
                 <div class="progress-topline">
                     <span class="eyebrow">Overall Progress</span>
-                    <span id="overall-progress-text" class="progress-text">0%</span>
+                    <span id="overall-progress-text" class="progress-text">11%</span>
                 </div>
                 <div class="progress-track">
-                    <div id="overall-progress-bar" class="progress-fill" style="width: 0%"></div>
+                    <div id="overall-progress-bar" class="progress-fill" style="width: 11%;"></div>
                 </div>
             </div>
         </aside>
@@ -782,12 +1042,12 @@
         <main class="main custom-scrollbar">
             <header class="header">
                 <div>
-                    <h1 id="current-view-title" class="page-title">Master Dashboard</h1>
-                    <p id="current-view-subtitle" class="page-subtitle">Track your progress across the 80-day implementation roadmap</p>
+                    <h1 id="current-view-title" class="page-title">macOS Onboarding &amp; Compliance Readiness</h1>
+                    <p id="current-view-subtitle" class="page-subtitle">Days 1-7 • Phase 1: macOS Readiness, Inventory &amp; Policy Cleanup</p>
                 </div>
                 <div class="header-actions">
-                    <span id="lock-pill" class="lock-pill">🔒 View Only</span>
-                    <button id="edit-toggle-btn" onclick="toggleEditMode()" class="btn btn-dark">🔓 Enable Edit</button>
+                    <span id="lock-pill" class="lock-pill">✏️ Edit Mode</span>
+                    <button id="edit-toggle-btn" onclick="toggleEditMode()" class="btn btn-dark">🔒 Lock Edit</button>
                     <button id="save-btn" onclick="manualSave()" class="btn btn-dark edit-only">💾 Save Progress</button>
                     <button onclick="downloadSnapshot()" class="btn btn-orange edit-only" title="Download an HTML file that includes the current edits so you can re-publish it">⬇️ Download Updated HTML</button>
                     <button onclick="exportToExcel()" class="btn btn-orange">📊 Export XLSX</button>
@@ -795,7 +1055,610 @@
                 </div>
             </header>
 
-            <div id="content-area" class="content"></div>
+            <div id="content-area" class="content">
+                <div class="info-grid">
+                    
+                <div class="card info-card">
+                    <span class="eyebrow">Objective</span>
+                    <p>Review and validate the complete macOS onboarding and management process in Microsoft Intune, including enrollment, compliance, security tooling, identity integration, and user experience for both corporate-owned and BYOD devices.</p>
+                </div>
+            
+                    
+                <div class="card info-card">
+                    <span class="eyebrow">Success Criteria</span>
+                    <ul><li>macOS onboarding workflow validated end-to-end.</li><li>Compliance and configuration policies reviewed and documented.</li><li>All required security agents successfully deployed and reporting.</li><li>Cisco VPN functioning correctly on managed macOS devices.</li><li>Platform SSO and domain integration validated.</li><li>BYOD and COD profiles verified and aligned with security requirements.</li><li>Identified gaps documented with remediation actions and ownership assigned.</li></ul>
+                </div>
+            
+                </div>
+                <div class="card table-shell custom-scrollbar">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">Task Status</th>
+                                <th>Task Description</th>
+                                <th style="width: 190px;">Assigned To</th>
+                                <th style="width: 140px;">CR Number</th>
+                                <th style="width: 130px;">POC Status</th>
+                                <th style="width: 130px;">Rollout</th>
+                                <th class="edit-only" style="width: 90px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr class="">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 0, 'status', this.value)" class="field-small status-badge-wip">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress" selected="">WIP</option>
+                                            <option value="Completed">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 0, 'step', this.value)">MacBook onboarding SOP.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Wayne San" onchange="updateField('day1-7', 0, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 0, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 0, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 0, 'rollout', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 0)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 1, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 1, 'step', this.value)">Build and Deploy Platform SSO</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="ProArch" onchange="updateField('day1-7', 1, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 1, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 1, 'poc', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 1, 'rollout', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 1)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 2, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 2, 'step', this.value)">Create/Review the macOS enrollment profiles for Bring Your Own Device (BYOD).</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 2, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 2, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 2, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 2, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 2)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 3, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 3, 'step', this.value)">Create/Review macOS compliance policies for FileVault enforcement, password requirements, OS version compliance, and firewall settings.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="ProArch" onchange="updateField('day1-7', 3, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 3, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 3, 'poc', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 3, 'rollout', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 3)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 4, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 4, 'step', this.value)">Create specific Conditional Access Policy for integration with macOS apps.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Chris Brown" onchange="updateField('day1-7', 4, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 4, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 4, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 4, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 4)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 5, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 5, 'step', this.value)">Rename and Review the Naming Convention of all the configurations and applications on macOS environment.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 5, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 5, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 5, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 5, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 5)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 6, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 6, 'step', this.value)">Create and Deploy macOS configuration profiles for Corporate Wi-Fi certificates</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 6, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 6, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 6, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 6, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 6)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 7, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 7, 'step', this.value)">Create and Deploy allowing the network printer accessibility on macbook devices.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 7, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 7, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 7, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 7, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 7)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 8, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 8, 'step', this.value)">Review/Test domain join workflow for MacBooks.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Wayne San" onchange="updateField('day1-7', 8, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 8, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 8, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 8, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 8)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 9, 'status', this.value)" class="field-small status-badge-wip">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress" selected="">WIP</option>
+                                            <option value="Completed">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 9, 'step', this.value)">Review deployment and health status for Arctic Wolf Agent, Webroot Agent, and CrowdStrike Falcon Agent.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="ProArch" onchange="updateField('day1-7', 9, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 9, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 9, 'poc', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 9, 'rollout', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 9)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 10, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 10, 'step', this.value)">Review and Create a desktop shortcut for password reset url and fileshare folder</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 10, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 10, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 10, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 10, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 10)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 11, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 11, 'step', this.value)">Test, Deploy and Review Cisco Secure Client VPN app for macOS.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 11, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 11, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 11, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 11, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 11)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="completed-row">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 12, 'status', this.value)" class="field-small status-badge-completed">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress">WIP</option>
+                                            <option value="Completed" selected="">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 12, 'step', this.value)">Test and Deploy automated macos updates via DDM.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="ProArch" onchange="updateField('day1-7', 12, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 12, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 12, 'poc', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 12, 'rollout', this.value)" class="field-small text-done">
+                                            <option value="Pending">Pending</option>
+                                            <option value="Done" selected="">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 12)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr class="">
+                                    <td>
+                                        <select onchange="updateField('day1-7', 13, 'status', this.value)" class="field-small status-badge-wip">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="Started">Started</option>
+                                            <option value="Work in Progress" selected="">WIP</option>
+                                            <option value="Completed">Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <textarea class="task-edit" onchange="updateField('day1-7', 13, 'step', this.value)">Confirm successful deployment status on pilot devices.</textarea>
+                                        <span class="sop-pill">SOP: TBD</span>
+                                    </td>
+                                    <td>
+                                        <input type="text" value="Sohith Desu" onchange="updateField('day1-7', 13, 'assignedTo', this.value)" placeholder="Owner name" class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="N/A" onchange="updateField('day1-7', 13, 'cr', this.value)" placeholder="CR-XXXXX" class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 13, 'poc', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('day1-7', 13, 'rollout', this.value)" class="field-small text-pending">
+                                            <option value="Pending" selected="">Pending</option>
+                                            <option value="Done">Done</option>
+                                            <option value="N/A">N/A</option>
+                                        </select>
+                                    </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('day1-7', 13)">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                            
+                                <tr class="add-task-row">
+                                    <td colspan="7">
+                                        <div style="display:flex; gap:8px; align-items:center;">
+                                            <input id="new-task-input-day1-7" type="text" placeholder="Describe a new task and press Enter…" onkeydown="if(event.key==='Enter')addTask('day1-7')">
+                                            <button class="btn btn-orange" onclick="addTask('day1-7')">+ Add Task</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -814,6 +1677,11 @@
 
     <script>
         const STORAGE_KEY = 'euromonitorTrackerStateV3';
+        // DATA_VERSION is bumped automatically every time you click "Download Updated HTML".
+        // When a viewer loads a newer file, their cached browser state is discarded so the
+        // published task data is what shows up.
+        const DATA_VERSION = '3';
+        const VERSION_KEY = 'euromonitorTrackerDataVersion';
         const taskDefaults = {
             sop: 'TBD',
             status: 'Not Started',
@@ -829,444 +1697,1531 @@
 
         /*TRACKER_DATA_START*/
         const trackerData = [
-            {
-                id: 'day1-7',
-                day: 'Days 1-7',
-                title: 'macOS Onboarding & Compliance Readiness',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Review and validate the complete macOS onboarding and management process in Microsoft Intune, including enrollment, compliance, security tooling, identity integration, and user experience for both corporate-owned and BYOD devices.',
-                success: [
-                    'macOS onboarding workflow validated end-to-end.',
-                    'Compliance and configuration policies reviewed and documented.',
-                    'All required security agents successfully deployed and reporting.',
-                    'Cisco VPN functioning correctly on managed macOS devices.',
-                    'Platform SSO and domain integration validated.',
-                    'BYOD and COD profiles verified and aligned with security requirements.',
-                    'Identified gaps documented with remediation actions and ownership assigned.'
-                ],
-                tasks: [
-                    task('Review the current MacBook onboarding workflow.'),
-                    task('Validate Apple Business Manager (ABM) integration and automated device enrollment.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review macOS enrollment profiles for Corporate-Owned Devices (COD) and Bring Your Own Device (BYOD).'),
-                    task('Review macOS compliance policies for FileVault enforcement, password requirements, OS version compliance, and firewall settings.'),
-                    task('Validate Conditional Access integration with compliance states.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Identify gaps in policy assignments or exclusions.'),
-                    task('Review and document macOS configuration profiles for Wi-Fi, certificates, restrictions, PPPC, system extensions, and login settings.'),
-                    task('Validate macOS profile targeting and conflict resolution.'),
-                    task('Confirm successful deployment status on pilot devices.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review deployment and health status for Arctic Wolf Agent, Webroot Agent, and CrowdStrike Falcon Agent.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate agent installation methods, version control, silent deployment configuration, tamper protection, and reporting visibility.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Identify failed or incomplete security agent deployments.'),
-                    task('Review Cisco VPN deployment configuration for macOS.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate VPN profile deployment and user access experience.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Test VPN connectivity from enrolled macOS devices.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review Platform SSO configuration for macOS.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate Entra ID integration and authentication flow.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review domain join workflow for MacBooks.'),
-                    task('Verify mobile account creation behavior and local account mapping.'),
-                    task('Test first login, offline login, password synchronization, and account lockout handling.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Document gaps with remediation actions and ownership assigned.')
-                ]
-            },
-            {
-                id: 'day8',
-                day: 'Day 8',
-                title: 'Intune Device Inventory & Stale Device Assessment',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Audit all Intune-managed devices and identify stale, non-compliant, and inactive records.',
-                success: ['Complete inventory report.', 'Approved cleanup list.'],
-                tasks: [
-                    task('Export all devices from Intune and Entra ID.'),
-                    task('Categorize devices by Last check-in date, Compliance state, Enrollment type, and Join type.'),
-                    task('Identify devices safe to remove, devices requiring investigation, and active but non-compliant devices.'),
-                    task('Create a Device Audit Tracker.')
-                ]
-            },
-            {
-                id: 'day9',
-                day: 'Day 9',
-                title: 'Device Cleanup Rule Configuration',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Implement automated cleanup rules for stale devices.',
-                success: ['Cleanup rule active.', 'IT teams informed.'],
-                tasks: [
-                    task('Configure Intune cleanup rule to delete devices inactive for 90+ days.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review Android, iOS, and macOS applicability.'),
-                    task('Notify IT Operations and Helpdesk.'),
-                    task('Plan Entra ID stale device cleanup.')
-                ]
-            },
-            {
-                id: 'day10',
-                day: 'Day 10',
-                title: 'Configuration Profile Review',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Identify redundant and outdated Intune configuration profiles.',
-                success: ['Consolidation plan approved.'],
-                tasks: [
-                    task('Export all configuration profiles.'),
-                    task('Categorize profiles as Merge, Delete, Replace, or Retain.'),
-                    task('Identify duplicate USB, telemetry, and legacy policies.'),
-                    task('Define target state profile count.')
-                ]
-            },
-            {
-                id: 'day11',
-                day: 'Day 11',
-                title: 'Profile Cleanup & Consolidation',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Reduce redundant profiles and consolidate policy areas before targeted rollout.',
-                success: ['Reduced configuration profile count.', 'Legacy policies removed.'],
-                tasks: [
-                    task('Remove unused and test profiles.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Consolidate telemetry and data collection policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Consolidate USB restriction policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Consolidate NCSC baseline policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate legacy templates to Settings Catalog.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day12',
-                day: 'Day 12',
-                title: 'Data Collection Policy Consolidation',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Create a single global telemetry and monitoring policy.',
-                success: ['Unified telemetry policy deployed.'],
-                tasks: [
-                    task('Create EUROM-WIN-GlobalDataCollection-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Include Windows diagnostic data, OneDrive Sync Health, Driver telemetry, and Health monitoring.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Assign to All Devices.', { rollout: 'Pending' }),
-                    task('Remove legacy profiles.', { rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day13',
-                day: 'Day 13',
-                title: 'USB & Device Control Consolidation',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Create a single authoritative USB restriction policy.',
-                success: ['Single USB control policy active.'],
-                tasks: [
-                    task('Retain Settings Catalog USB policy.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate approved USB device IDs.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Remove duplicate legacy USB policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate USB blocking and exclusions.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day14',
-                day: 'Day 14',
-                title: 'NCSC Baseline Migration',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Migrate legacy NCSC profiles into a modern Settings Catalog baseline.',
-                success: ['New modernized baseline active.'],
-                tasks: [
-                    task('Export existing NCSC settings.'),
-                    task('Create consolidated Settings Catalog baseline.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Remove overlapping or duplicate settings.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Assign globally.', { rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day15-21',
-                day: 'Days 15-21',
-                title: 'Cleanup Completion',
-                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
-                objective: 'Complete policy cleanup and finalize the simplified Intune configuration baseline.',
-                success: ['Optimized and simplified Intune environment.'],
-                tasks: [
-                    task('Continue profile consolidation.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate policy application.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Remove deprecated templates.', { rollout: 'Pending' }),
-                    task('Standardize naming conventions.'),
-                    task('Finalize cleanup documentation.')
-                ]
-            },
-            {
-                id: 'day22',
-                day: 'Day 22',
-                title: 'Endpoint Security Profile Design',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Design modern Endpoint Security profiles for BitLocker, Windows Firewall, and Windows Security Experience.',
-                success: ['Security-approved design document.'],
-                tasks: [
-                    task('Document existing BitLocker settings.'),
-                    task('Design modern Endpoint Security policies.'),
-                    task('Define encryption, firewall, and security settings.'),
-                    task('Identify pilot devices.')
-                ]
-            },
-            {
-                id: 'day23',
-                day: 'Day 23',
-                title: 'BitLocker Pilot Deployment',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Deploy BitLocker Endpoint Security profile to pilot devices.',
-                success: ['Successful pilot deployment.'],
-                tasks: [
-                    task('Create EUROM-ES-BitLocker-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Deploy to pilot group.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate encryption, recovery key escrow to Entra ID, and compliance.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day24-28',
-                day: 'Days 24-28',
-                title: 'Security Policy Rollout',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Roll out core endpoint security policies and prepare GPO auto-enrollment testing.',
-                success: ['Firewall and Windows Security Experience rollout validated.', 'Test OU prepared for GPO auto-enrollment.'],
-                tasks: [
-                    task('Deploy Firewall profile.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Deploy Windows Security Experience profile.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate endpoint security compliance.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Build test OU for GPO auto-enrollment.', { poc: 'Pending' })
-                ]
-            },
-            {
-                id: 'day29-30',
-                day: 'Days 29-30',
-                title: 'GPO Auto-Enrollment Pilot',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Pilot GPO-based Intune auto-enrollment.',
-                success: ['Successful GPO-based enrollment.'],
-                tasks: [
-                    task('Configure GPO to enable automatic MDM enrollment.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Apply auto-enrollment GPO to test OU.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate enrollment, Intune check-in, and SCCM coexistence.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day31-35',
-                day: 'Days 31-35',
-                title: 'RBAC & Administrative Security',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Implement least-privilege administration and scoped operational access.',
-                success: ['RBAC implemented.'],
-                tasks: [
-                    task('Design Intune RBAC model.'),
-                    task('Define least privilege roles.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Assign administrative scopes.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate Helpdesk permissions.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day36',
-                day: 'Day 36',
-                title: 'Delivery Optimization Global Rollout',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Expand Delivery Optimization globally.',
-                success: ['Delivery Optimization active globally.'],
-                tasks: [
-                    task('Deploy Delivery Optimization to all offices.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Configure bandwidth limits for constrained locations.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate peer-to-peer update sharing.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Confirm firewall requirements.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day37',
-                day: 'Day 37',
-                title: 'LAPS Production Rollout',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Deploy Microsoft LAPS organization-wide.',
-                success: ['LAPS active across all managed devices.'],
-                tasks: [
-                    task('Validate pilot deployment.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Configure password complexity, rotation schedule, and Entra ID backup.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Expand LAPS to All Devices.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Configure RBAC access to passwords.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day38-45',
-                day: 'Days 38-45',
-                title: 'App Control & Security Hardening',
-                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
-                objective: 'Prepare App Control for Business and hardening controls for phased rollout.',
-                success: ['WDAC deployment strategy approved.'],
-                tasks: [
-                    task('Design App Control for Business (WDAC).'),
-                    task('Review software restriction policies.'),
-                    task('Prepare audit-mode deployment.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate application compatibility.')
-                ]
-            },
-            {
-                id: 'day46',
-                day: 'Day 46',
-                title: 'GPO Migration Preparation',
-                phase: 'Phase 3: Group Policy Migration',
-                objective: 'Prepare migration of legacy GPOs into Intune.',
-                success: ['Migration readiness validated.'],
-                tasks: [
-                    task('Review Group Policy Analytics.'),
-                    task('Export all GPO reports.'),
-                    task('Create migration tracking spreadsheet.'),
-                    task('Define naming standards.'),
-                    task('Build migration testing framework.')
-                ]
-            },
-            {
-                id: 'day47',
-                day: 'Day 47',
-                title: 'Device Management & DNS GPO Migration',
-                phase: 'Phase 3: Group Policy Migration',
-                objective: 'Pilot migration of core device management and DNS GPO settings into Intune.',
-                success: ['Successful pilot migration.'],
-                tasks: [
-                    task('Create EUROM-WIN-GPO-GlobalBaseline-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate Device Management settings and DNS suffix search list.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Deploy to pilot devices.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate DNS resolution.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day48-55',
-                day: 'Days 48-55',
-                title: 'GPO Migration',
-                phase: 'Phase 3: Group Policy Migration',
-                objective: 'Migrate major remaining GPO dependencies and replace unsupported items with Intune alternatives.',
-                success: ['Major GPO dependencies removed.'],
-                tasks: [
-                    task('Migrate Default User Policy.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate WebRoot policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate Auditing policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate Local group management.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Migrate Regional Wi-Fi and Radius policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Replace unsupported GPOs with Intune alternatives.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day56-60',
-                day: 'Days 56-60',
-                title: 'Migration Validation',
-                phase: 'Phase 3: Group Policy Migration',
-                objective: 'Validate migrated policies, remove redundant GPOs, and confirm stable Intune-based policy management.',
-                success: ['Stable Intune-based policy management.'],
-                tasks: [
-                    task('Validate migrated policies.'),
-                    task('Remove redundant GPOs.', { rollout: 'Pending' }),
-                    task('Confirm no policy conflicts.'),
-                    task('Update migration tracking.')
-                ]
-            },
-            {
-                id: 'day61-63',
-                day: 'Days 61-63',
-                title: 'Security Baseline Validation',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Validate Windows Security Baseline pilot deployment.',
-                success: ['Stable customized security baseline.'],
-                tasks: [
-                    task('Collect user feedback.'),
-                    task('Review Event Logs.'),
-                    task('Identify conflicts for VPN compatibility, SMB signing, NTLM restrictions, and script execution.'),
-                    task('Adjust baseline settings where required.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day64-71',
-                day: 'Days 64-71',
-                title: 'Feature Expansion & Stabilization',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Expand core features and stabilize the enterprise-wide deployment.',
-                success: ['Stable enterprise-wide deployment.'],
-                tasks: [
-                    task('Continue domain enrollment rollout.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Expand security baseline coverage.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Finalize App Control audit mode.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Complete operational documentation.')
-                ]
-            },
-            {
-                id: 'day72',
-                day: 'Day 72',
-                title: 'SCCM Dependency Removal Planning',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Formalize SCCM decommissioning and confirm GPO-based enrollment across all domains.',
-                success: ['SCCM retirement plan approved.', 'All domains confirmed on GPO auto-enrollment.'],
-                tasks: [
-                    task('Validate GPO auto-enrollment across all 11 domains.'),
-                    task('Define SCCM decommissioning sequence.'),
-                    task('Identify remaining Config Manager-managed devices.'),
-                    task('Document rollback procedures.')
-                ]
-            },
-            {
-                id: 'day73',
-                day: 'Day 73',
-                title: 'Compliance Policy Enhancement Deployment',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Deploy enhanced compliance policies aligned with ProArch recommendations.',
-                success: ['Updated compliance policies deployed.', 'Compliance baseline established.'],
-                tasks: [
-                    task('Update Windows compliance policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Enforce BitLocker, Firewall, Antivirus, TPM, and Secure Boot.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Configure grace periods and escalation process.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Validate macOS compliance separation.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day74',
-                day: 'Day 74',
-                title: 'Conditional Access Rationalization',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Enforce device compliance for Windows sign-ins.',
-                success: ['Conditional Access policy active in Report-Only mode.', 'No unintended user lockouts.'],
-                tasks: [
-                    task('Review all existing Conditional Access policies.'),
-                    task('Create EUROM-CA-Windows-DeviceCompliance-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Deploy initially in Report-Only mode.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Review and plan promotion of WIP policies.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Enable admin MFA policies.', { poc: 'Pending', rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day75-77',
-                day: 'Days 75-77',
-                title: 'Mobile App Protection Policies',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Deploy App Protection Policies for iOS and Android BYOD devices.',
-                success: ['App Protection Policies enforced.', 'Mobile Conditional Access active.'],
-                tasks: [
-                    task('Configure app protection requirements for PIN or biometrics, data protection, and approved app enforcement.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Create EUROM-APP-iOS-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Create EUROM-APP-Android-Prod.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Configure Conditional Access for mobile access.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Communicate rollout to users.', { rollout: 'Pending' })
-                ]
-            },
-            {
-                id: 'day78',
-                day: 'Day 78',
-                title: 'Azure VPN Profile Validation',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Validate remediation of Azure VPN profiles.',
-                success: ['VPN profiles functioning with zero major errors.'],
-                tasks: [
-                    task('Validate Tokyo VPN profile.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Resolve duplicate profile assignments.', { rollout: 'Pending' }),
-                    task('Validate all regional VPN profiles.', { poc: 'Pending', rollout: 'Pending' }),
-                    task('Document VPN management procedures.')
-                ]
-            },
-            {
-                id: 'day79-80',
-                day: 'Days 79-80',
-                title: 'Entra ID Stale Device Remediation',
-                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
-                objective: 'Address stale Entra ID devices outside Intune cleanup scope.',
-                success: ['Stale device cleanup initiated.', 'Ongoing governance process established.'],
-                tasks: [
-                    task('Export stale device report.'),
-                    task('Coordinate cleanup with Active Directory teams.'),
-                    task('Remove inactive registered devices.', { rollout: 'Pending' }),
-                    task('Validate cleanup automation.'),
-                    task('Document ongoing cleanup process.')
-                ]
-            }
-        ];
+  {
+    "id": "day1-7",
+    "day": "Days 1-7",
+    "title": "macOS Onboarding & Compliance Readiness",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Review and validate the complete macOS onboarding and management process in Microsoft Intune, including enrollment, compliance, security tooling, identity integration, and user experience for both corporate-owned and BYOD devices.",
+    "success": [
+      "macOS onboarding workflow validated end-to-end.",
+      "Compliance and configuration policies reviewed and documented.",
+      "All required security agents successfully deployed and reporting.",
+      "Cisco VPN functioning correctly on managed macOS devices.",
+      "Platform SSO and domain integration validated.",
+      "BYOD and COD profiles verified and aligned with security requirements.",
+      "Identified gaps documented with remediation actions and ownership assigned."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Work in Progress",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Pending",
+        "assignedTo": "Wayne San",
+        "step": "MacBook onboarding SOP."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "ProArch",
+        "step": "Build and Deploy Platform SSO"
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Create/Review the macOS enrollment profiles for Bring Your Own Device (BYOD)."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "ProArch",
+        "step": "Create/Review macOS compliance policies for FileVault enforcement, password requirements, OS version compliance, and firewall settings."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Chris Brown",
+        "step": "Create specific Conditional Access Policy for integration with macOS apps."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Rename and Review the Naming Convention of all the configurations and applications on macOS environment."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Create and Deploy macOS configuration profiles for Corporate Wi-Fi certificates"
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Create and Deploy allowing the network printer accessibility on macbook devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Wayne San",
+        "step": "Review/Test domain join workflow for MacBooks."
+      },
+      {
+        "sop": "TBD",
+        "status": "Work in Progress",
+        "cr": "N/A",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "ProArch",
+        "step": "Review deployment and health status for Arctic Wolf Agent, Webroot Agent, and CrowdStrike Falcon Agent."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Review and Create a desktop shortcut for password reset url and fileshare folder"
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Test, Deploy and Review Cisco Secure Client VPN app for macOS."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "N/A",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "ProArch",
+        "step": "Test and Deploy automated macos updates via DDM."
+      },
+      {
+        "sop": "TBD",
+        "status": "Work in Progress",
+        "cr": "N/A",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Sohith Desu",
+        "step": "Confirm successful deployment status on pilot devices."
+      }
+    ]
+  },
+  {
+    "id": "day8",
+    "day": "Day 8",
+    "title": "Intune Device Inventory & Stale Device Assessment",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Audit all Intune-managed devices and identify stale, non-compliant, and inactive records.",
+    "success": [
+      "Complete inventory report.",
+      "Approved cleanup list."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "386220",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Export all devices from Intune and Entra ID."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "386220",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Sohith Desu",
+        "step": "Categorize devices by Last check-in date, Compliance state, Enrollment type, and Join type."
+      },
+      {
+        "sop": "TBD",
+        "status": "Completed",
+        "cr": "386220",
+        "poc": "Done",
+        "rollout": "Done",
+        "assignedTo": "Shun",
+        "step": "Identify and Create a list of devices safe to remove, devices requiring investigation, and active but non-compliant devices."
+      }
+    ]
+  },
+  {
+    "id": "day9",
+    "day": "Day 9",
+    "title": "Device Cleanup Rule Configuration",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Implement automated cleanup rules for stale devices.",
+    "success": [
+      "Cleanup rule active.",
+      "IT teams informed."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Sohith Desu",
+        "step": "Configure Intune cleanup rule to delete devices inactive for 90+ days."
+      },
+      {
+        "sop": "TBD",
+        "status": "Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Chris Brown",
+        "step": "Plan Entra ID stale device cleanup."
+      }
+    ]
+  },
+  {
+    "id": "day10",
+    "day": "Day 10",
+    "title": "Configuration Profile Review",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Identify redundant and outdated Intune configuration profiles.",
+    "success": [
+      "Consolidation plan approved."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Export all configuration profiles."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Categorize profiles as Merge, Delete, Replace, or Retain."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Identify duplicate USB, telemetry, and legacy policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Define target state profile count."
+      }
+    ]
+  },
+  {
+    "id": "day11",
+    "day": "Day 11",
+    "title": "Profile Cleanup & Consolidation",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Reduce redundant profiles and consolidate policy areas before targeted rollout.",
+    "success": [
+      "Reduced configuration profile count.",
+      "Legacy policies removed."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove unused and test profiles."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Consolidate telemetry and data collection policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Consolidate USB restriction policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Consolidate NCSC baseline policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate legacy templates to Settings Catalog."
+      }
+    ]
+  },
+  {
+    "id": "day12",
+    "day": "Day 12",
+    "title": "Data Collection Policy Consolidation",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Create a single global telemetry and monitoring policy.",
+    "success": [
+      "Unified telemetry policy deployed."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-WIN-GlobalDataCollection-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Include Windows diagnostic data, OneDrive Sync Health, Driver telemetry, and Health monitoring."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Assign to All Devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove legacy profiles."
+      }
+    ]
+  },
+  {
+    "id": "day13",
+    "day": "Day 13",
+    "title": "USB & Device Control Consolidation",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Create a single authoritative USB restriction policy.",
+    "success": [
+      "Single USB control policy active."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Retain Settings Catalog USB policy."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate approved USB device IDs."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove duplicate legacy USB policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate USB blocking and exclusions."
+      }
+    ]
+  },
+  {
+    "id": "day14",
+    "day": "Day 14",
+    "title": "NCSC Baseline Migration",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Migrate legacy NCSC profiles into a modern Settings Catalog baseline.",
+    "success": [
+      "New modernized baseline active."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Export existing NCSC settings."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create consolidated Settings Catalog baseline."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove overlapping or duplicate settings."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Assign globally."
+      }
+    ]
+  },
+  {
+    "id": "day15-21",
+    "day": "Days 15-21",
+    "title": "Cleanup Completion",
+    "phase": "Phase 1: macOS Readiness, Inventory & Policy Cleanup",
+    "objective": "Complete policy cleanup and finalize the simplified Intune configuration baseline.",
+    "success": [
+      "Optimized and simplified Intune environment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Continue profile consolidation."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate policy application."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove deprecated templates."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Standardize naming conventions."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Finalize cleanup documentation."
+      }
+    ]
+  },
+  {
+    "id": "day22",
+    "day": "Day 22",
+    "title": "Endpoint Security Profile Design",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Design modern Endpoint Security profiles for BitLocker, Windows Firewall, and Windows Security Experience.",
+    "success": [
+      "Security-approved design document."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Document existing BitLocker settings."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Design modern Endpoint Security policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Define encryption, firewall, and security settings."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Identify pilot devices."
+      }
+    ]
+  },
+  {
+    "id": "day23",
+    "day": "Day 23",
+    "title": "BitLocker Pilot Deployment",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Deploy BitLocker Endpoint Security profile to pilot devices.",
+    "success": [
+      "Successful pilot deployment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-ES-BitLocker-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy to pilot group."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate encryption, recovery key escrow to Entra ID, and compliance."
+      }
+    ]
+  },
+  {
+    "id": "day24-28",
+    "day": "Days 24-28",
+    "title": "Security Policy Rollout",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Roll out core endpoint security policies and prepare GPO auto-enrollment testing.",
+    "success": [
+      "Firewall and Windows Security Experience rollout validated.",
+      "Test OU prepared for GPO auto-enrollment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy Firewall profile."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy Windows Security Experience profile."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate endpoint security compliance."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Build test OU for GPO auto-enrollment."
+      }
+    ]
+  },
+  {
+    "id": "day29-30",
+    "day": "Days 29-30",
+    "title": "GPO Auto-Enrollment Pilot",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Pilot GPO-based Intune auto-enrollment.",
+    "success": [
+      "Successful GPO-based enrollment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure GPO to enable automatic MDM enrollment."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Apply auto-enrollment GPO to test OU."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate enrollment, Intune check-in, and SCCM coexistence."
+      }
+    ]
+  },
+  {
+    "id": "day31-35",
+    "day": "Days 31-35",
+    "title": "RBAC & Administrative Security",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Implement least-privilege administration and scoped operational access.",
+    "success": [
+      "RBAC implemented."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Design Intune RBAC model."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Define least privilege roles."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Assign administrative scopes."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate Helpdesk permissions."
+      }
+    ]
+  },
+  {
+    "id": "day36",
+    "day": "Day 36",
+    "title": "Delivery Optimization Global Rollout",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Expand Delivery Optimization globally.",
+    "success": [
+      "Delivery Optimization active globally."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy Delivery Optimization to all offices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure bandwidth limits for constrained locations."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate peer-to-peer update sharing."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Confirm firewall requirements."
+      }
+    ]
+  },
+  {
+    "id": "day37",
+    "day": "Day 37",
+    "title": "LAPS Production Rollout",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Deploy Microsoft LAPS organization-wide.",
+    "success": [
+      "LAPS active across all managed devices."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate pilot deployment."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure password complexity, rotation schedule, and Entra ID backup."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Expand LAPS to All Devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure RBAC access to passwords."
+      }
+    ]
+  },
+  {
+    "id": "day38-45",
+    "day": "Days 38-45",
+    "title": "App Control & Security Hardening",
+    "phase": "Phase 2: Endpoint Security, Enrollment & Administrative Security",
+    "objective": "Prepare App Control for Business and hardening controls for phased rollout.",
+    "success": [
+      "WDAC deployment strategy approved."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Design App Control for Business (WDAC)."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Review software restriction policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Prepare audit-mode deployment."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Validate application compatibility."
+      }
+    ]
+  },
+  {
+    "id": "day46",
+    "day": "Day 46",
+    "title": "GPO Migration Preparation",
+    "phase": "Phase 3: Group Policy Migration",
+    "objective": "Prepare migration of legacy GPOs into Intune.",
+    "success": [
+      "Migration readiness validated."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Review Group Policy Analytics."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Export all GPO reports."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Create migration tracking spreadsheet."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Define naming standards."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Build migration testing framework."
+      }
+    ]
+  },
+  {
+    "id": "day47",
+    "day": "Day 47",
+    "title": "Device Management & DNS GPO Migration",
+    "phase": "Phase 3: Group Policy Migration",
+    "objective": "Pilot migration of core device management and DNS GPO settings into Intune.",
+    "success": [
+      "Successful pilot migration."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-WIN-GPO-GlobalBaseline-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate Device Management settings and DNS suffix search list."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy to pilot devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate DNS resolution."
+      }
+    ]
+  },
+  {
+    "id": "day48-55",
+    "day": "Days 48-55",
+    "title": "GPO Migration",
+    "phase": "Phase 3: Group Policy Migration",
+    "objective": "Migrate major remaining GPO dependencies and replace unsupported items with Intune alternatives.",
+    "success": [
+      "Major GPO dependencies removed."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate Default User Policy."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate WebRoot policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate Auditing policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate Local group management."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Migrate Regional Wi-Fi and Radius policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Replace unsupported GPOs with Intune alternatives."
+      }
+    ]
+  },
+  {
+    "id": "day56-60",
+    "day": "Days 56-60",
+    "title": "Migration Validation",
+    "phase": "Phase 3: Group Policy Migration",
+    "objective": "Validate migrated policies, remove redundant GPOs, and confirm stable Intune-based policy management.",
+    "success": [
+      "Stable Intune-based policy management."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Validate migrated policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove redundant GPOs."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Confirm no policy conflicts."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Update migration tracking."
+      }
+    ]
+  },
+  {
+    "id": "day61-63",
+    "day": "Days 61-63",
+    "title": "Security Baseline Validation",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Validate Windows Security Baseline pilot deployment.",
+    "success": [
+      "Stable customized security baseline."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Collect user feedback."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Review Event Logs."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Identify conflicts for VPN compatibility, SMB signing, NTLM restrictions, and script execution."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Adjust baseline settings where required."
+      }
+    ]
+  },
+  {
+    "id": "day64-71",
+    "day": "Days 64-71",
+    "title": "Feature Expansion & Stabilization",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Expand core features and stabilize the enterprise-wide deployment.",
+    "success": [
+      "Stable enterprise-wide deployment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Continue domain enrollment rollout."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Expand security baseline coverage."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Finalize App Control audit mode."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Complete operational documentation."
+      }
+    ]
+  },
+  {
+    "id": "day72",
+    "day": "Day 72",
+    "title": "SCCM Dependency Removal Planning",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Formalize SCCM decommissioning and confirm GPO-based enrollment across all domains.",
+    "success": [
+      "SCCM retirement plan approved.",
+      "All domains confirmed on GPO auto-enrollment."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Validate GPO auto-enrollment across all 11 domains."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Define SCCM decommissioning sequence."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Identify remaining Config Manager-managed devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Document rollback procedures."
+      }
+    ]
+  },
+  {
+    "id": "day73",
+    "day": "Day 73",
+    "title": "Compliance Policy Enhancement Deployment",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Deploy enhanced compliance policies aligned with ProArch recommendations.",
+    "success": [
+      "Updated compliance policies deployed.",
+      "Compliance baseline established."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Update Windows compliance policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Enforce BitLocker, Firewall, Antivirus, TPM, and Secure Boot."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure grace periods and escalation process."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate macOS compliance separation."
+      }
+    ]
+  },
+  {
+    "id": "day74",
+    "day": "Day 74",
+    "title": "Conditional Access Rationalization",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Enforce device compliance for Windows sign-ins.",
+    "success": [
+      "Conditional Access policy active in Report-Only mode.",
+      "No unintended user lockouts."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Review all existing Conditional Access policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-CA-Windows-DeviceCompliance-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Deploy initially in Report-Only mode."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Review and plan promotion of WIP policies."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Enable admin MFA policies."
+      }
+    ]
+  },
+  {
+    "id": "day75-77",
+    "day": "Days 75-77",
+    "title": "Mobile App Protection Policies",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Deploy App Protection Policies for iOS and Android BYOD devices.",
+    "success": [
+      "App Protection Policies enforced.",
+      "Mobile Conditional Access active."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure app protection requirements for PIN or biometrics, data protection, and approved app enforcement."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-APP-iOS-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Create EUROM-APP-Android-Prod."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Configure Conditional Access for mobile access."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Communicate rollout to users."
+      }
+    ]
+  },
+  {
+    "id": "day78",
+    "day": "Day 78",
+    "title": "Azure VPN Profile Validation",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Validate remediation of Azure VPN profiles.",
+    "success": [
+      "VPN profiles functioning with zero major errors."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate Tokyo VPN profile."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Resolve duplicate profile assignments."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "Pending",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Validate all regional VPN profiles."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Document VPN management procedures."
+      }
+    ]
+  },
+  {
+    "id": "day79-80",
+    "day": "Days 79-80",
+    "title": "Entra ID Stale Device Remediation",
+    "phase": "Phase 4: Optimization, Compliance, Mobile & Stabilization",
+    "objective": "Address stale Entra ID devices outside Intune cleanup scope.",
+    "success": [
+      "Stale device cleanup initiated.",
+      "Ongoing governance process established."
+    ],
+    "tasks": [
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Export stale device report."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Coordinate cleanup with Active Directory teams."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "Pending",
+        "assignedTo": "Unassigned",
+        "step": "Remove inactive registered devices."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Validate cleanup automation."
+      },
+      {
+        "sop": "TBD",
+        "status": "Not Started",
+        "cr": "TBD",
+        "poc": "N/A",
+        "rollout": "N/A",
+        "assignedTo": "Unassigned",
+        "step": "Document ongoing cleanup process."
+      }
+    ]
+  }
+];
         /*TRACKER_DATA_END*/
 
         function cloneData(data) {
@@ -1282,6 +3237,16 @@
 
         const EDIT_PASSWORD = 'Euro@123';
         let editMode = false;
+
+        // If the published file has a newer DATA_VERSION than what's cached, clear cache
+        // so viewers see the freshly published task list.
+        (function checkDataVersion() {
+            const cachedVersion = localStorage.getItem(VERSION_KEY);
+            if (cachedVersion !== DATA_VERSION) {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.setItem(VERSION_KEY, DATA_VERSION);
+            }
+        })();
 
         let state = ensureSchema(JSON.parse(localStorage.getItem(STORAGE_KEY)) || cloneData(trackerData));
 
@@ -1705,7 +3670,7 @@
             const html = document.documentElement.outerHTML;
             const serialized = JSON.stringify(state, null, 2);
             const newBlock = '/*TRACKER_DATA_START*/\n        const trackerData = ' + serialized + ';\n        /*TRACKER_DATA_END*/';
-            const updated = html.replace(
+            let updated = html.replace(
                 /\/\*TRACKER_DATA_START\*\/[\s\S]*?\/\*TRACKER_DATA_END\*\//,
                 newBlock.replace(/\$/g, '$$$$')
             );
@@ -1713,6 +3678,12 @@
                 alert('Could not locate trackerData markers in the page source.');
                 return;
             }
+            // Auto-bump DATA_VERSION so viewers' cached state is discarded when they load the new file
+            const nextVersion = String((parseInt(DATA_VERSION, 10) || 0) + 1);
+            updated = updated.replace(
+                /const DATA_VERSION = '[^']*';/,
+                "const DATA_VERSION = '" + nextVersion + "';"
+            );
             const blob = new Blob(['<!DOCTYPE html>\n' + updated], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1797,5 +3768,10 @@
         showDashboard();
         updateOverallProgress();
     </script>
-</body>
-</html>
+
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10c53b1189a9bc1',t:'MTc4MjMxMDM0MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
+
+
+
+
