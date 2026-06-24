@@ -745,7 +745,7 @@
         }
     </style>
 </head>
-<body class="edit-mode">
+<body>
     <div id="app" class="app">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -1046,11 +1046,10 @@
                     <p id="current-view-subtitle" class="page-subtitle">Days 1-7 • Phase 1: macOS Readiness, Inventory &amp; Policy Cleanup</p>
                 </div>
                 <div class="header-actions">
-                    <span id="lock-pill" class="lock-pill">✏️ Edit Mode</span>
-                    <button id="edit-toggle-btn" onclick="toggleEditMode()" class="btn btn-dark">🔒 Lock Edit</button>
+                    <button id="admin-toggle-btn" onclick="toggleEditMode()" class="btn btn-dark">🔐 Admin Mode</button>
                     <button id="save-btn" onclick="manualSave()" class="btn btn-dark edit-only">💾 Save Progress</button>
                     <button onclick="downloadSnapshot()" class="btn btn-orange edit-only" title="Download an HTML file that includes the current edits so you can re-publish it">⬇️ Download Updated HTML</button>
-                    <button onclick="exportToExcel()" class="btn btn-orange">📊 Export XLSX</button>
+                    <button onclick="exportToExcel()" class="btn btn-orange edit-only">📊 Export XLSX</button>
                     <button onclick="resetData()" class="btn btn-icon edit-only" title="Reset all tracker data">🗑️</button>
                 </div>
             </header>
@@ -1664,13 +1663,27 @@
 
     <div id="pw-modal" class="modal-backdrop" onclick="if(event.target===this)closePwModal()">
         <div class="modal">
-            <h3>Enter edit password</h3>
-            <p>Editing is password-protected. Viewers without the password can still see progress.</p>
+            <h3 id="pw-modal-title">Enter admin password</h3>
+            <p id="pw-modal-desc">Admin features are password-protected. Viewers without the password can still see progress.</p>
             <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')submitPw()">
             <div id="pw-err" class="modal-err"></div>
             <div class="modal-actions">
                 <button class="btn btn-icon" onclick="closePwModal()">Cancel</button>
-                <button class="btn btn-dark" onclick="submitPw()">Unlock</button>
+                <button id="pw-submit-btn" class="btn btn-dark" onclick="submitPw()">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="reset-modal" class="modal-backdrop" onclick="if(event.target===this)closeResetModal()">
+        <div class="modal">
+            <h3>Set a new admin password</h3>
+            <p>This is the first time you are unlocking Admin Mode on this file. Set a new password — it will replace the default and be baked into your next published HTML.</p>
+            <input id="reset-pw1" type="password" placeholder="New password (min 8 chars)" autocomplete="new-password">
+            <input id="reset-pw2" type="password" placeholder="Confirm new password" autocomplete="new-password" onkeydown="if(event.key==='Enter')submitResetPw()">
+            <div id="reset-err" class="modal-err"></div>
+            <div class="modal-actions">
+                <button class="btn btn-icon" onclick="closeResetModal()">Skip for now</button>
+                <button id="reset-submit-btn" class="btn btn-dark" onclick="submitResetPw()">Set password</button>
             </div>
         </div>
     </div>
@@ -1680,7 +1693,7 @@
         // DATA_VERSION is bumped automatically every time you click "Download Updated HTML".
         // When a viewer loads a newer file, their cached browser state is discarded so the
         // published task data is what shows up.
-        const DATA_VERSION = '3';
+        const DATA_VERSION = '7';
         const VERSION_KEY = 'euromonitorTrackerDataVersion';
         const taskDefaults = {
             sop: 'TBD',
@@ -3235,7 +3248,106 @@
             }));
         }
 
-        const EDIT_PASSWORD = 'Euro@123';
+        // ============================================================================
+        // Edit-mode security: The real edit functions (updateField, addTask, deleteTask,
+        // downloadSnapshot, resetData, manualSave) are NOT in this file as plain code.
+        // They live encrypted in EDIT_BUNDLE below, decryptable only with the password.
+        // Until decryption succeeds, those functions are no-op stubs that do nothing.
+        //
+        // This means: setting editMode=true in DevTools accomplishes nothing — there's
+        // no real edit logic to invoke.
+        //
+        // Brute force is resisted by PBKDF2-SHA256 with 600,000 iterations, taking
+        // ~500ms per guess in a browser. Wordlist attacks become impractical.
+        // ============================================================================
+        let EDIT_BUNDLE = {
+            // isDefault = true means the file is using the original published password and the
+            // user must set a new one on first admin unlock.
+            isDefault: true,
+            salt:  "x9PwG9WeC+rRf6mM7Fp+Mg==",
+            nonce: "Yb9cUGzJdbGZirTH",
+            iter:  600000,
+            ct:    "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",
+        };
+
+        // Holds decrypted edit-bundle source after a successful unlock so the password-
+        // reset flow can re-encrypt it with a new key.
+        let _decryptedEditCode = null;
+
+        function _b64ToBytes(b64) {
+            const bin = atob(b64);
+            const out = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+            return out;
+        }
+
+        async function _deriveKey(password) {
+            const baseKey = await crypto.subtle.importKey(
+                'raw', new TextEncoder().encode(password),
+                { name: 'PBKDF2' }, false, ['deriveKey']
+            );
+            return crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt: _b64ToBytes(EDIT_BUNDLE.salt),
+                  iterations: EDIT_BUNDLE.iter, hash: 'SHA-256' },
+                baseKey,
+                { name: 'AES-GCM', length: 256 },
+                false, ['decrypt']
+            );
+        }
+
+        async function _tryUnlock(password) {
+            const key = await _deriveKey(password);
+            const plaintextBuf = await crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv: _b64ToBytes(EDIT_BUNDLE.nonce) },
+                key, _b64ToBytes(EDIT_BUNDLE.ct)
+            );
+            const code = new TextDecoder().decode(plaintextBuf);
+            _decryptedEditCode = code;
+            // Decryption succeeded — install the real edit functions.
+            // Use indirect eval so 'this' is the global scope, allowing reassignment of stubs.
+            (0, eval)(code);
+        }
+
+        // Convert binary to base64 (handles large arrays without stack overflow)
+        function _bytesToB64(bytes) {
+            let bin = '';
+            const chunk = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunk) {
+                bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+            }
+            return btoa(bin);
+        }
+
+        // Re-encrypt the in-memory _decryptedEditCode with a new password, producing a
+        // fresh EDIT_BUNDLE (new salt, new nonce). Mutates the live EDIT_BUNDLE so
+        // downloadSnapshot bakes the new credentials into the published file.
+        async function _reencryptBundle(newPassword) {
+            if (!_decryptedEditCode) throw new Error('No decrypted bundle available; unlock first.');
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const nonce = crypto.getRandomValues(new Uint8Array(12));
+            const baseKey = await crypto.subtle.importKey(
+                'raw', new TextEncoder().encode(newPassword),
+                { name: 'PBKDF2' }, false, ['deriveKey']
+            );
+            const newKey = await crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt, iterations: EDIT_BUNDLE.iter, hash: 'SHA-256' },
+                baseKey,
+                { name: 'AES-GCM', length: 256 },
+                false, ['encrypt']
+            );
+            const ctBuf = await crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv: nonce },
+                newKey,
+                new TextEncoder().encode(_decryptedEditCode)
+            );
+            EDIT_BUNDLE = {
+                isDefault: false,
+                salt: _bytesToB64(salt),
+                nonce: _bytesToB64(nonce),
+                iter: EDIT_BUNDLE.iter,
+                ct: _bytesToB64(new Uint8Array(ctBuf)),
+            };
+        }
         let editMode = false;
 
         // If the published file has a newer DATA_VERSION than what's cached, clear cache
@@ -3263,22 +3375,9 @@
             return escapeHtml(value);
         }
 
-        function manualSave() {
-            if (!editMode) return;
-            const btn = document.getElementById('save-btn');
-            btn.classList.add('save-animation');
-            btn.innerHTML = '✅ Saved!';
-
-            updateOverallProgress();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-
-            setTimeout(() => {
-                btn.classList.remove('save-animation');
-                btn.innerHTML = '💾 Save Progress';
-            }, 2000);
-
-            renderSidebar();
-        }
+        // Stubs — overwritten by encrypted bundle after correct password.
+        // Until then these are no-ops; calling them from DevTools does nothing.
+        let manualSave = function () { if (!window.__editUnlocked) return; };
 
         function updateOverallProgress() {
             let totalTasks = 0;
@@ -3590,53 +3689,32 @@
             return 'text-na';
         }
 
-        function updateField(dayId, taskIdx, field, value) {
-            if (!editMode) return;
-            const day = state.find(item => item.id === dayId);
-            if (!day || !day.tasks[taskIdx]) return;
-            day.tasks[taskIdx][field] = field === 'assignedTo' ? ((value || '').trim() || 'Unassigned') : value;
-            if (field === 'status') showDay(dayId);
-        }
+        let updateField = function () { if (!window.__editUnlocked) return; };
 
-        function addTask(dayId) {
-            if (!editMode) return;
-            const input = document.getElementById('new-task-input-' + dayId);
-            const text = (input?.value || '').trim();
-            if (!text) return;
-            const day = state.find(item => item.id === dayId);
-            if (!day) return;
-            day.tasks.push(task(text));
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-            renderSidebar();
-            updateOverallProgress();
-            showDay(dayId);
-        }
+        let addTask = function () { if (!window.__editUnlocked) return; };
 
-        function deleteTask(dayId, taskIdx) {
-            if (!editMode) return;
-            if (!confirm('Delete this task? This cannot be undone (until you reset).')) return;
-            const day = state.find(item => item.id === dayId);
-            if (!day) return;
-            day.tasks.splice(taskIdx, 1);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-            renderSidebar();
-            updateOverallProgress();
-            showDay(dayId);
-        }
+        let deleteTask = function () { if (!window.__editUnlocked) return; };
 
         function toggleEditMode() {
             if (editMode) {
                 editMode = false;
                 document.body.classList.remove('edit-mode');
-                document.getElementById('edit-toggle-btn').innerHTML = '🔓 Enable Edit';
-                document.getElementById('lock-pill').innerHTML = '🔒 View Only';
-                // Refresh current view
+                document.getElementById('admin-toggle-btn').innerHTML = '🔐 Admin Mode';
                 const active = document.querySelector('.day-nav.active');
                 if (active) showDay(active.id.replace('nav-', ''));
                 else showDashboard();
             } else {
                 openPwModal();
             }
+        }
+
+        function _enterEditMode() {
+            editMode = true;
+            document.body.classList.add('edit-mode');
+            document.getElementById('admin-toggle-btn').innerHTML = '🔒 Exit Admin';
+            const active = document.querySelector('.day-nav.active');
+            if (active) showDay(active.id.replace('nav-', ''));
+            else showDashboard();
         }
 
         function openPwModal() {
@@ -3648,63 +3726,74 @@
         function closePwModal() {
             document.getElementById('pw-modal').classList.remove('show');
         }
-        function submitPw() {
+        function openResetModal() {
+            document.getElementById('reset-pw1').value = '';
+            document.getElementById('reset-pw2').value = '';
+            document.getElementById('reset-err').innerText = '';
+            document.getElementById('reset-modal').classList.add('show');
+            setTimeout(() => document.getElementById('reset-pw1').focus(), 50);
+        }
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.remove('show');
+            // Skipping reset still unlocks admin mode (user said "Skip for now")
+            if (window.__editUnlocked && !editMode) _enterEditMode();
+        }
+
+        async function submitPw() {
             const val = document.getElementById('pw-input').value;
-            if (val === EDIT_PASSWORD) {
-                editMode = true;
-                document.body.classList.add('edit-mode');
-                document.getElementById('edit-toggle-btn').innerHTML = '🔒 Lock Edit';
-                document.getElementById('lock-pill').innerHTML = '✏️ Edit Mode';
+            const errEl = document.getElementById('pw-err');
+            const unlockBtn = document.getElementById('pw-submit-btn');
+            errEl.innerText = '';
+            const originalLabel = unlockBtn ? unlockBtn.innerHTML : null;
+            if (unlockBtn) { unlockBtn.disabled = true; unlockBtn.innerHTML = 'Verifying…'; }
+            try {
+                await _tryUnlock(val);
+                if (!window.__editUnlocked) throw new Error('Bundle did not unlock');
                 closePwModal();
-                const active = document.querySelector('.day-nav.active');
-                if (active) showDay(active.id.replace('nav-', ''));
-                else showDashboard();
-            } else {
-                document.getElementById('pw-err').innerText = 'Incorrect password.';
+                // First time on this file? Force password reset before showing admin controls.
+                if (EDIT_BUNDLE.isDefault) {
+                    openResetModal();
+                } else {
+                    _enterEditMode();
+                }
+            } catch (e) {
+                errEl.innerText = 'Incorrect password.';
+            } finally {
+                if (unlockBtn) { unlockBtn.disabled = false; unlockBtn.innerHTML = originalLabel; }
             }
         }
 
-        function downloadSnapshot() {
-            // Rewrites the current HTML so the in-file trackerData reflects current state,
-            // so when re-published, all viewers see the updated tasks.
-            const html = document.documentElement.outerHTML;
-            const serialized = JSON.stringify(state, null, 2);
-            const newBlock = '/*TRACKER_DATA_START*/\n        const trackerData = ' + serialized + ';\n        /*TRACKER_DATA_END*/';
-            let updated = html.replace(
-                /\/\*TRACKER_DATA_START\*\/[\s\S]*?\/\*TRACKER_DATA_END\*\//,
-                newBlock.replace(/\$/g, '$$$$')
-            );
-            if (updated === html) {
-                alert('Could not locate trackerData markers in the page source.');
-                return;
+        async function submitResetPw() {
+            const pw1 = document.getElementById('reset-pw1').value;
+            const pw2 = document.getElementById('reset-pw2').value;
+            const errEl = document.getElementById('reset-err');
+            const btn = document.getElementById('reset-submit-btn');
+            errEl.innerText = '';
+            if (pw1.length < 8) { errEl.innerText = 'Password must be at least 8 characters.'; return; }
+            if (pw1 !== pw2) { errEl.innerText = 'Passwords do not match.'; return; }
+            const originalLabel = btn.innerHTML;
+            btn.disabled = true; btn.innerHTML = 'Encrypting…';
+            try {
+                await _reencryptBundle(pw1);
+                // Close reset modal and enter edit mode
+                document.getElementById('reset-modal').classList.remove('show');
+                _enterEditMode();
+                // Nudge user to publish the new credentials immediately
+                setTimeout(() => alert(
+                    'Password updated in memory.\n\n' +
+                    'Click "⬇️ Download Updated HTML" and re-publish to GitHub. ' +
+                    'Until you publish, the file on the server still uses the old password.'
+                ), 100);
+            } catch (e) {
+                errEl.innerText = 'Could not encrypt: ' + (e && e.message ? e.message : e);
+            } finally {
+                btn.disabled = false; btn.innerHTML = originalLabel;
             }
-            // Auto-bump DATA_VERSION so viewers' cached state is discarded when they load the new file
-            const nextVersion = String((parseInt(DATA_VERSION, 10) || 0) + 1);
-            updated = updated.replace(
-                /const DATA_VERSION = '[^']*';/,
-                "const DATA_VERSION = '" + nextVersion + "';"
-            );
-            const blob = new Blob(['<!DOCTYPE html>\n' + updated], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'euromonitor-intune-implementation-tracker.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
 
-        function resetData() {
-            if (!editMode) return;
-            if (confirm('Reset all progress? This will clear all status, CR, POC, rollout and assigned-to updates.')) {
-                state = ensureSchema(cloneData(trackerData));
-                localStorage.removeItem(STORAGE_KEY);
-                renderSidebar();
-                showDashboard();
-                updateOverallProgress();
-            }
-        }
+        let downloadSnapshot = function () { if (!window.__editUnlocked) { alert('Enter the edit password first.'); return; } };
+
+        let resetData = function () { if (!window.__editUnlocked) return; };
 
         function exportToExcel() {
             const detailedData = [];
@@ -3770,8 +3859,4 @@
     </script>
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10c53b1189a9bc1',t:'MTc4MjMxMDM0MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
-
-
-
-
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10d343b98b1b85b',t:'MTc4MjMxOTUzOA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
