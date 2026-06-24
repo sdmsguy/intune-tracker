@@ -685,6 +685,48 @@
         }
         .save-animation { animation: save-pulse 0.3s ease-in-out; }
 
+        /* === Edit-mode additions === */
+        .edit-only { display: none !important; }
+        body.edit-mode .edit-only { display: inline-flex !important; }
+        .lock-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--slate-100); color: var(--slate-600);
+            padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+        }
+        body.edit-mode .lock-pill { background: #fef3c7; color: #92400e; }
+        .row-actions { display: flex; gap: 6px; }
+        .icon-btn {
+            border: 1px solid var(--slate-200); background: #fff;
+            border-radius: 8px; padding: 6px 9px; font-size: 13px;
+        }
+        .icon-btn:hover { background: var(--slate-50); }
+        .icon-btn.danger { color: var(--red-600); border-color: #fecaca; }
+        .icon-btn.danger:hover { background: #fef2f2; }
+        .modal-backdrop {
+            position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-backdrop.show { display: flex; }
+        .modal {
+            background: #fff; border-radius: 16px; padding: 28px;
+            width: 100%; max-width: 440px; box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+        .modal h3 { margin: 0 0 6px; color: var(--slate-900); }
+        .modal p { margin: 0 0 16px; color: var(--slate-500); font-size: 14px; }
+        .modal input {
+            width: 100%; padding: 12px 14px; border-radius: 10px;
+            border: 1px solid var(--slate-300); margin-bottom: 8px;
+        }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+        .modal-err { color: var(--red-600); font-size: 13px; min-height: 18px; }
+        textarea.task-edit {
+            width: 100%; min-height: 60px; padding: 8px 10px;
+            border: 1px solid var(--slate-300); border-radius: 8px; resize: vertical;
+            font-family: inherit; font-size: 14px;
+        }
+        .add-task-row td { padding: 14px; background: var(--slate-50); }
+        .add-task-row input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--slate-300); }
+
         @media (max-width: 1100px) {
             .sidebar { width: 280px; min-width: 280px; }
             .header { align-items: flex-start; flex-direction: column; }
@@ -744,14 +786,30 @@
                     <p id="current-view-subtitle" class="page-subtitle">Track your progress across the 80-day implementation roadmap</p>
                 </div>
                 <div class="header-actions">
-                    <button id="save-btn" onclick="manualSave()" class="btn btn-dark">💾 Save Progress</button>
+                    <span id="lock-pill" class="lock-pill">🔒 View Only</span>
+                    <button id="edit-toggle-btn" onclick="toggleEditMode()" class="btn btn-dark">🔓 Enable Edit</button>
+                    <button id="save-btn" onclick="manualSave()" class="btn btn-dark edit-only">💾 Save Progress</button>
+                    <button onclick="downloadSnapshot()" class="btn btn-orange edit-only" title="Download an HTML file that includes the current edits so you can re-publish it">⬇️ Download Updated HTML</button>
                     <button onclick="exportToExcel()" class="btn btn-orange">📊 Export XLSX</button>
-                    <button onclick="resetData()" class="btn btn-icon" title="Reset all tracker data">🗑️</button>
+                    <button onclick="resetData()" class="btn btn-icon edit-only" title="Reset all tracker data">🗑️</button>
                 </div>
             </header>
 
             <div id="content-area" class="content"></div>
         </main>
+    </div>
+
+    <div id="pw-modal" class="modal-backdrop" onclick="if(event.target===this)closePwModal()">
+        <div class="modal">
+            <h3>Enter edit password</h3>
+            <p>Editing is password-protected. Viewers without the password can still see progress.</p>
+            <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')submitPw()">
+            <div id="pw-err" class="modal-err"></div>
+            <div class="modal-actions">
+                <button class="btn btn-icon" onclick="closePwModal()">Cancel</button>
+                <button class="btn btn-dark" onclick="submitPw()">Unlock</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -769,6 +827,7 @@
             return { ...taskDefaults, step, ...overrides };
         }
 
+        /*TRACKER_DATA_START*/
         const trackerData = [
             {
                 id: 'day1-7',
@@ -1208,6 +1267,7 @@
                 ]
             }
         ];
+        /*TRACKER_DATA_END*/
 
         function cloneData(data) {
             return JSON.parse(JSON.stringify(data));
@@ -1219,6 +1279,9 @@
                 tasks: day.tasks.map(item => ({ ...taskDefaults, ...item }))
             }));
         }
+
+        const EDIT_PASSWORD = 'Euro@123';
+        let editMode = false;
 
         let state = ensureSchema(JSON.parse(localStorage.getItem(STORAGE_KEY)) || cloneData(trackerData));
 
@@ -1236,6 +1299,7 @@
         }
 
         function manualSave() {
+            if (!editMode) return;
             const btn = document.getElementById('save-btn');
             btn.classList.add('save-animation');
             btn.innerHTML = '✅ Saved!';
@@ -1470,19 +1534,20 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 170px;">Task Status</th>
+                                <th style="width: 150px;">Task Status</th>
                                 <th>Task Description</th>
-                                <th style="width: 210px;">Assigned To</th>
-                                <th style="width: 160px;">CR Number</th>
-                                <th style="width: 160px;">POC Status</th>
-                                <th style="width: 160px;">Rollout</th>
+                                <th style="width: 190px;">Assigned To</th>
+                                <th style="width: 140px;">CR Number</th>
+                                <th style="width: 130px;">POC Status</th>
+                                <th style="width: 130px;">Rollout</th>
+                                <th class="edit-only" style="width: 90px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${day.tasks.map((item, idx) => `
                                 <tr class="${item.status === 'Completed' ? 'completed-row' : ''}">
                                     <td>
-                                        <select onchange="updateField('${dayId}', ${idx}, 'status', this.value)" class="field-small ${getStatusBadgeClass(item.status)}">
+                                        <select ${editMode?'':'disabled'} onchange="updateField('${dayId}', ${idx}, 'status', this.value)" class="field-small ${getStatusBadgeClass(item.status)}">
                                             <option value="Not Started" ${item.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
                                             <option value="Started" ${item.status === 'Started' ? 'selected' : ''}>Started</option>
                                             <option value="Work in Progress" ${item.status === 'Work in Progress' ? 'selected' : ''}>WIP</option>
@@ -1490,39 +1555,56 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <div class="task-text">${escapeHtml(item.step)}</div>
+                                        ${editMode
+                                            ? `<textarea class="task-edit" onchange="updateField('${dayId}', ${idx}, 'step', this.value)">${escapeHtml(item.step)}</textarea>`
+                                            : `<div class="task-text">${escapeHtml(item.step)}</div>`}
                                         <span class="sop-pill">SOP: ${escapeHtml(item.sop)}</span>
                                     </td>
                                     <td>
-                                        <input type="text"
+                                        <input type="text" ${editMode?'':'readonly'}
                                             value="${escapeAttr(item.assignedTo || 'Unassigned')}"
                                             onchange="updateField('${dayId}', ${idx}, 'assignedTo', this.value)"
                                             placeholder="Owner name"
                                             class="input-small">
                                     </td>
                                     <td>
-                                        <input type="text"
+                                        <input type="text" ${editMode?'':'readonly'}
                                             value="${escapeAttr(item.cr)}"
                                             onchange="updateField('${dayId}', ${idx}, 'cr', this.value)"
                                             placeholder="CR-XXXXX"
                                             class="input-small">
                                     </td>
                                     <td>
-                                        <select onchange="updateField('${dayId}', ${idx}, 'poc', this.value)" class="field-small ${getStatusColor(item.poc)}">
+                                        <select ${editMode?'':'disabled'} onchange="updateField('${dayId}', ${idx}, 'poc', this.value)" class="field-small ${getStatusColor(item.poc)}">
                                             <option value="Pending" ${item.poc === 'Pending' ? 'selected' : ''}>Pending</option>
                                             <option value="Done" ${item.poc === 'Done' ? 'selected' : ''}>Done</option>
                                             <option value="N/A" ${item.poc === 'N/A' ? 'selected' : ''}>N/A</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select onchange="updateField('${dayId}', ${idx}, 'rollout', this.value)" class="field-small ${getStatusColor(item.rollout)}">
+                                        <select ${editMode?'':'disabled'} onchange="updateField('${dayId}', ${idx}, 'rollout', this.value)" class="field-small ${getStatusColor(item.rollout)}">
                                             <option value="Pending" ${item.rollout === 'Pending' ? 'selected' : ''}>Pending</option>
                                             <option value="Done" ${item.rollout === 'Done' ? 'selected' : ''}>Done</option>
                                             <option value="N/A" ${item.rollout === 'N/A' ? 'selected' : ''}>N/A</option>
                                         </select>
                                     </td>
+                                    <td class="edit-only">
+                                        <div class="row-actions">
+                                            <button class="icon-btn danger" title="Delete this task" onclick="deleteTask('${dayId}', ${idx})">🗑️</button>
+                                        </div>
+                                    </td>
                                 </tr>
                             `).join('')}
+                            ${editMode ? `
+                                <tr class="add-task-row">
+                                    <td colspan="7">
+                                        <div style="display:flex; gap:8px; align-items:center;">
+                                            <input id="new-task-input-${dayId}" type="text" placeholder="Describe a new task and press Enter…" onkeydown="if(event.key==='Enter')addTask('${dayId}')">
+                                            <button class="btn btn-orange" onclick="addTask('${dayId}')">+ Add Task</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ` : ''}
                         </tbody>
                     </table>
                 </div>
@@ -1544,13 +1626,106 @@
         }
 
         function updateField(dayId, taskIdx, field, value) {
+            if (!editMode) return;
             const day = state.find(item => item.id === dayId);
             if (!day || !day.tasks[taskIdx]) return;
             day.tasks[taskIdx][field] = field === 'assignedTo' ? ((value || '').trim() || 'Unassigned') : value;
             if (field === 'status') showDay(dayId);
         }
 
+        function addTask(dayId) {
+            if (!editMode) return;
+            const input = document.getElementById('new-task-input-' + dayId);
+            const text = (input?.value || '').trim();
+            if (!text) return;
+            const day = state.find(item => item.id === dayId);
+            if (!day) return;
+            day.tasks.push(task(text));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderSidebar();
+            updateOverallProgress();
+            showDay(dayId);
+        }
+
+        function deleteTask(dayId, taskIdx) {
+            if (!editMode) return;
+            if (!confirm('Delete this task? This cannot be undone (until you reset).')) return;
+            const day = state.find(item => item.id === dayId);
+            if (!day) return;
+            day.tasks.splice(taskIdx, 1);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderSidebar();
+            updateOverallProgress();
+            showDay(dayId);
+        }
+
+        function toggleEditMode() {
+            if (editMode) {
+                editMode = false;
+                document.body.classList.remove('edit-mode');
+                document.getElementById('edit-toggle-btn').innerHTML = '🔓 Enable Edit';
+                document.getElementById('lock-pill').innerHTML = '🔒 View Only';
+                // Refresh current view
+                const active = document.querySelector('.day-nav.active');
+                if (active) showDay(active.id.replace('nav-', ''));
+                else showDashboard();
+            } else {
+                openPwModal();
+            }
+        }
+
+        function openPwModal() {
+            document.getElementById('pw-input').value = '';
+            document.getElementById('pw-err').innerText = '';
+            document.getElementById('pw-modal').classList.add('show');
+            setTimeout(() => document.getElementById('pw-input').focus(), 50);
+        }
+        function closePwModal() {
+            document.getElementById('pw-modal').classList.remove('show');
+        }
+        function submitPw() {
+            const val = document.getElementById('pw-input').value;
+            if (val === EDIT_PASSWORD) {
+                editMode = true;
+                document.body.classList.add('edit-mode');
+                document.getElementById('edit-toggle-btn').innerHTML = '🔒 Lock Edit';
+                document.getElementById('lock-pill').innerHTML = '✏️ Edit Mode';
+                closePwModal();
+                const active = document.querySelector('.day-nav.active');
+                if (active) showDay(active.id.replace('nav-', ''));
+                else showDashboard();
+            } else {
+                document.getElementById('pw-err').innerText = 'Incorrect password.';
+            }
+        }
+
+        function downloadSnapshot() {
+            // Rewrites the current HTML so the in-file trackerData reflects current state,
+            // so when re-published, all viewers see the updated tasks.
+            const html = document.documentElement.outerHTML;
+            const serialized = JSON.stringify(state, null, 2);
+            const newBlock = '/*TRACKER_DATA_START*/\n        const trackerData = ' + serialized + ';\n        /*TRACKER_DATA_END*/';
+            const updated = html.replace(
+                /\/\*TRACKER_DATA_START\*\/[\s\S]*?\/\*TRACKER_DATA_END\*\//,
+                newBlock.replace(/\$/g, '$$$$')
+            );
+            if (updated === html) {
+                alert('Could not locate trackerData markers in the page source.');
+                return;
+            }
+            const blob = new Blob(['<!DOCTYPE html>\n' + updated], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'euromonitor-intune-implementation-tracker.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
         function resetData() {
+            if (!editMode) return;
             if (confirm('Reset all progress? This will clear all status, CR, POC, rollout and assigned-to updates.')) {
                 state = ensureSchema(cloneData(trackerData));
                 localStorage.removeItem(STORAGE_KEY);
@@ -1622,5 +1797,5 @@
         showDashboard();
         updateOverallProgress();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0c0876ed86f897b',t:'MTc4MTUxNTU0Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
