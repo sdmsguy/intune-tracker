@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euromonitor | Intune Implementation Tracker</title>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --eu-orange: #F37021;
+            --eu-orange-dark: #D95F14;
+            --eu-orange-soft: #fff7ed;
+            --eu-navy: #002F5F;
+            --eu-slate: #4A4A4A;
+            --slate-25: #fcfcfc;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-600: #16a34a;
+            --green-800: #166534;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-700: #1d4ed8;
+            --yellow-100: #fef9c3;
+            --yellow-800: #854d0e;
+            --red-600: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            color: var(--slate-800);
+            background: #f8f9fa;
+            font-family: "Outfit", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            height: 100%;
+            background: #fff;
+            border-right: 1px solid var(--slate-200);
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+        }
+
+        .sidebar-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--eu-orange), #ffb15f);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            box-shadow: 0 12px 28px rgba(243, 112, 33, 0.24);
+        }
+
+        .brand-name {
+            color: var(--slate-900);
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -0.035em;
+        }
+
+        .brand-subtitle {
+            margin: 16px 0 0;
+            color: var(--slate-400);
+            font-size: 10px;
+            line-height: 1.6;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+
+        .sidebar-footer {
+            padding: 30px 32px;
+            border-top: 1px solid var(--slate-100);
+            background: rgba(248, 250, 252, 0.45);
+        }
+
+        .sidebar-label {
+            padding: 24px 32px 14px;
+            color: var(--slate-300);
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+        }
+
+        .sidebar-item {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: var(--slate-700);
+            transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+
+        .sidebar-item.active {
+            background: var(--eu-orange-soft);
+            border-right: 4px solid var(--eu-orange);
+            color: var(--eu-orange);
+        }
+
+        .dashboard-nav {
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            font-weight: 900;
+        }
+
+        .dashboard-nav:hover { background: var(--slate-50); }
+
+        .days-list {
+            padding: 0 12px;
+        }
+
+        .day-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            text-align: left;
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-bottom: 4px;
+        }
+
+        .day-nav:hover {
+            background: var(--slate-50);
+            transform: translateX(2px);
+        }
+
+        .day-nav-left {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            flex: 0 0 auto;
+            background: var(--slate-200);
+        }
+
+        .status-dot.done { background: var(--green-600); }
+        .status-dot.partial { background: var(--eu-orange); }
+
+        .day-nav-text { min-width: 0; }
+        .day-nav-day {
+            display: block;
+            color: var(--slate-700);
+            font-size: 12px;
+            font-weight: 900;
+        }
+        .day-nav-title {
+            display: block;
+            color: var(--slate-400);
+            font-size: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 205px;
+        }
+        .day-count {
+            flex: 0 0 auto;
+            border-radius: 9px;
+            padding: 4px 8px;
+            background: var(--slate-100);
+            color: var(--slate-400);
+            font-size: 9px;
+            font-weight: 900;
+        }
+        .day-nav:hover .day-count, .day-nav.active .day-count {
+            background: #ffedd5;
+            color: var(--eu-orange);
+        }
+
+        .progress-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .eyebrow {
+            color: var(--slate-400);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .progress-text {
+            color: var(--eu-orange);
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: var(--slate-200);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--eu-orange);
+            border-radius: 999px;
+            transition: width 700ms ease;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            overflow-y: auto;
+            background: var(--slate-25);
+            position: relative;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--slate-200);
+            backdrop-filter: blur(12px);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .page-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 26px;
+            line-height: 1.16;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+        }
+
+        .page-subtitle {
+            margin: 6px 0 0;
+            color: var(--slate-400);
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 18px;
+            padding: 13px 18px;
+            min-height: 48px;
+            font-size: 14px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: transform 160ms ease, background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-dark {
+            color: #fff;
+            background: var(--slate-900);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+        }
+        .btn-dark:hover { background: #000; }
+        .btn-orange {
+            color: #fff;
+            background: var(--eu-orange);
+            box-shadow: 0 16px 30px rgba(243, 112, 33, 0.16);
+        }
+        .btn-orange:hover { background: var(--eu-orange-dark); }
+        .btn-icon {
+            width: 48px;
+            padding: 0;
+            color: var(--slate-400);
+            background: #fff;
+            border: 1px solid var(--slate-200);
+        }
+        .btn-icon:hover { color: var(--red-600); }
+
+        .content {
+            padding: 40px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--slate-100);
+            border-radius: 32px;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-card {
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 88px;
+            height: 88px;
+            right: -34px;
+            top: -34px;
+            border-radius: 999px;
+            background: rgba(243, 112, 33, 0.08);
+        }
+
+        .stat-label {
+            color: var(--slate-400);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            color: var(--slate-900);
+            font-size: 42px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -0.06em;
+        }
+        .stat-value.green { color: var(--green-600); }
+        .stat-value.blue { color: var(--blue-700); }
+        .stat-value.muted { color: var(--slate-300); }
+        .stat-value.orange { color: var(--eu-orange); }
+
+        .dashboard-panel {
+            padding: 28px;
+            margin-bottom: 44px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.035em;
+        }
+
+        .panel-note {
+            margin: 6px 0 0;
+            color: var(--slate-400);
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .assignee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .assignee-card {
+            border: 1px solid var(--slate-100);
+            border-radius: 22px;
+            padding: 16px;
+            background: linear-gradient(180deg, #fff, #fffaf6);
+        }
+
+        .assignee-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .assignee-name {
+            color: var(--slate-800);
+            font-size: 13px;
+            font-weight: 900;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .assignee-count {
+            flex: 0 0 auto;
+            min-width: 34px;
+            height: 28px;
+            padding: 0 9px;
+            border-radius: 999px;
+            background: var(--eu-orange);
+            color: #fff;
+            display: inline-grid;
+            place-items: center;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .phase-section { margin-top: 54px; }
+        .phase-section:first-of-type { margin-top: 0; }
+
+        .phase-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding: 0 4px;
+        }
+
+        .phase-title {
+            margin: 0;
+            color: var(--slate-900);
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+        }
+
+        .phase-progress {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 310px;
+        }
+
+        .phase-progress .progress-track { height: 9px; }
+
+        .day-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .day-card {
+            border: 1px solid var(--slate-100);
+            background: #fff;
+            text-align: left;
+            border-radius: 34px;
+            padding: 28px;
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        }
+        .day-card:hover {
+            border-color: #fed7aa;
+            transform: translateY(-3px);
+            box-shadow: 0 24px 48px rgba(243, 112, 33, 0.10);
+        }
+
+        .day-card-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .day-pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 12px;
+            padding: 7px 10px;
+            background: #fff7ed;
+            color: var(--eu-orange);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .pct-text {
+            color: var(--slate-300);
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .day-card-title {
+            margin: 0 0 28px;
+            color: var(--slate-800);
+            font-size: 16px;
+            line-height: 1.38;
+            font-weight: 850;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .info-card {
+            padding: 24px;
+        }
+
+        .info-card p, .info-card ul {
+            margin: 10px 0 0;
+            color: var(--slate-600);
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 600;
+        }
+        .info-card ul { padding-left: 18px; }
+
+        .table-shell {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1180px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(248, 250, 252, 0.58);
+            color: var(--slate-400);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            padding: 26px 24px;
+            border-bottom: 1px solid var(--slate-100);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--slate-100);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: 0; }
+        tr.completed-row { background: rgba(240, 253, 244, 0.45); }
+        tr:hover { background: rgba(248, 250, 252, 0.45); }
+
+        .task-text {
+            color: var(--slate-700);
+            font-size: 14px;
+            line-height: 1.58;
+            font-weight: 800;
+        }
+        .completed-row .task-text { color: var(--slate-400); }
+
+        .sop-pill {
+            display: inline-flex;
+            margin-top: 10px;
+            border: 1px solid var(--slate-100);
+            border-radius: 8px;
+            padding: 5px 8px;
+            background: var(--slate-50);
+            color: var(--slate-300);
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        input, select {
+            width: 100%;
+            border: 1px solid var(--slate-100);
+            border-radius: 16px;
+            background: rgba(248, 250, 252, 0.72);
+            color: var(--slate-700);
+            outline: none;
+            padding: 12px 14px;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+        input:focus, select:focus {
+            border-color: var(--eu-orange);
+            box-shadow: 0 0 0 4px rgba(243, 112, 33, 0.10);
+            background: #fff;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 18px 18px;
+            padding-right: 38px;
+        }
+
+        .field-small {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .input-small {
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .status-badge-completed { background-color: var(--green-100); color: var(--green-800); }
+        .status-badge-wip { background-color: var(--yellow-100); color: var(--yellow-800); }
+        .status-badge-started { background-color: var(--blue-100); color: #1e40af; }
+        .status-badge-notstarted { background-color: #f3f4f6; color: #4b5563; }
+        .text-done { color: var(--green-600); }
+        .text-pending { color: var(--eu-orange); }
+        .text-na { color: var(--slate-400); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+
+        @keyframes save-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .save-animation { animation: save-pulse 0.3s ease-in-out; }
+
+        @media (max-width: 1100px) {
+            .sidebar { width: 280px; min-width: 280px; }
+            .header { align-items: flex-start; flex-direction: column; }
+            .header-actions { justify-content: flex-start; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 760px) {
+            .app { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
+            .sidebar { width: 100%; min-width: 0; height: auto; max-height: 56vh; }
+            .main { overflow: visible; }
+            .content, .header { padding: 24px; }
+            .phase-heading { flex-direction: column; align-items: stretch; }
+            .phase-progress { min-width: 0; }
+            .btn { width: 100%; }
+            .btn-icon { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-mark">E</div>
+                    <div class="brand-name">EUROMONITOR</div>
+                </div>
+                <p class="brand-subtitle">Intune Implementation</p>
+            </div>
+
+            <div class="sidebar-scroll custom-scrollbar">
+                <nav id="sidebar-nav">
+                    <button onclick="showDashboard()" id="nav-dashboard" class="sidebar-item dashboard-nav active">
+                        <span>📈</span>
+                        <span>Dashboard</span>
+                    </button>
+                    <div class="sidebar-label">Implementation Plan</div>
+                    <div id="days-list" class="days-list"></div>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="progress-topline">
+                    <span class="eyebrow">Overall Progress</span>
+                    <span id="overall-progress-text" class="progress-text">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="overall-progress-bar" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main custom-scrollbar">
+            <header class="header">
+                <div>
+                    <h1 id="current-view-title" class="page-title">Master Dashboard</h1>
+                    <p id="current-view-subtitle" class="page-subtitle">Track your progress across the 80-day implementation roadmap</p>
+                </div>
+                <div class="header-actions">
+                    <button id="save-btn" onclick="manualSave()" class="btn btn-dark">💾 Save Progress</button>
+                    <button onclick="exportToExcel()" class="btn btn-orange">📊 Export XLSX</button>
+                    <button onclick="resetData()" class="btn btn-icon" title="Reset all tracker data">🗑️</button>
+                </div>
+            </header>
+
+            <div id="content-area" class="content"></div>
+        </main>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'euromonitorTrackerStateV3';
+        const taskDefaults = {
+            sop: 'TBD',
+            status: 'Not Started',
+            cr: 'TBD',
+            poc: 'N/A',
+            rollout: 'N/A',
+            assignedTo: 'Unassigned'
+        };
+
+        function task(step, overrides = {}) {
+            return { ...taskDefaults, step, ...overrides };
+        }
+
+        const trackerData = [
+            {
+                id: 'day1-7',
+                day: 'Days 1-7',
+                title: 'macOS Onboarding & Compliance Readiness',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Review and validate the complete macOS onboarding and management process in Microsoft Intune, including enrollment, compliance, security tooling, identity integration, and user experience for both corporate-owned and BYOD devices.',
+                success: [
+                    'macOS onboarding workflow validated end-to-end.',
+                    'Compliance and configuration policies reviewed and documented.',
+                    'All required security agents successfully deployed and reporting.',
+                    'Cisco VPN functioning correctly on managed macOS devices.',
+                    'Platform SSO and domain integration validated.',
+                    'BYOD and COD profiles verified and aligned with security requirements.',
+                    'Identified gaps documented with remediation actions and ownership assigned.'
+                ],
+                tasks: [
+                    task('Review the current MacBook onboarding workflow.'),
+                    task('Validate Apple Business Manager (ABM) integration and automated device enrollment.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review macOS enrollment profiles for Corporate-Owned Devices (COD) and Bring Your Own Device (BYOD).'),
+                    task('Review macOS compliance policies for FileVault enforcement, password requirements, OS version compliance, and firewall settings.'),
+                    task('Validate Conditional Access integration with compliance states.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Identify gaps in policy assignments or exclusions.'),
+                    task('Review and document macOS configuration profiles for Wi-Fi, certificates, restrictions, PPPC, system extensions, and login settings.'),
+                    task('Validate macOS profile targeting and conflict resolution.'),
+                    task('Confirm successful deployment status on pilot devices.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review deployment and health status for Arctic Wolf Agent, Webroot Agent, and CrowdStrike Falcon Agent.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate agent installation methods, version control, silent deployment configuration, tamper protection, and reporting visibility.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Identify failed or incomplete security agent deployments.'),
+                    task('Review Cisco VPN deployment configuration for macOS.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate VPN profile deployment and user access experience.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Test VPN connectivity from enrolled macOS devices.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review Platform SSO configuration for macOS.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate Entra ID integration and authentication flow.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review domain join workflow for MacBooks.'),
+                    task('Verify mobile account creation behavior and local account mapping.'),
+                    task('Test first login, offline login, password synchronization, and account lockout handling.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Document gaps with remediation actions and ownership assigned.')
+                ]
+            },
+            {
+                id: 'day8',
+                day: 'Day 8',
+                title: 'Intune Device Inventory & Stale Device Assessment',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Audit all Intune-managed devices and identify stale, non-compliant, and inactive records.',
+                success: ['Complete inventory report.', 'Approved cleanup list.'],
+                tasks: [
+                    task('Export all devices from Intune and Entra ID.'),
+                    task('Categorize devices by Last check-in date, Compliance state, Enrollment type, and Join type.'),
+                    task('Identify devices safe to remove, devices requiring investigation, and active but non-compliant devices.'),
+                    task('Create a Device Audit Tracker.')
+                ]
+            },
+            {
+                id: 'day9',
+                day: 'Day 9',
+                title: 'Device Cleanup Rule Configuration',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Implement automated cleanup rules for stale devices.',
+                success: ['Cleanup rule active.', 'IT teams informed.'],
+                tasks: [
+                    task('Configure Intune cleanup rule to delete devices inactive for 90+ days.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review Android, iOS, and macOS applicability.'),
+                    task('Notify IT Operations and Helpdesk.'),
+                    task('Plan Entra ID stale device cleanup.')
+                ]
+            },
+            {
+                id: 'day10',
+                day: 'Day 10',
+                title: 'Configuration Profile Review',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Identify redundant and outdated Intune configuration profiles.',
+                success: ['Consolidation plan approved.'],
+                tasks: [
+                    task('Export all configuration profiles.'),
+                    task('Categorize profiles as Merge, Delete, Replace, or Retain.'),
+                    task('Identify duplicate USB, telemetry, and legacy policies.'),
+                    task('Define target state profile count.')
+                ]
+            },
+            {
+                id: 'day11',
+                day: 'Day 11',
+                title: 'Profile Cleanup & Consolidation',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Reduce redundant profiles and consolidate policy areas before targeted rollout.',
+                success: ['Reduced configuration profile count.', 'Legacy policies removed.'],
+                tasks: [
+                    task('Remove unused and test profiles.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Consolidate telemetry and data collection policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Consolidate USB restriction policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Consolidate NCSC baseline policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate legacy templates to Settings Catalog.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day12',
+                day: 'Day 12',
+                title: 'Data Collection Policy Consolidation',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Create a single global telemetry and monitoring policy.',
+                success: ['Unified telemetry policy deployed.'],
+                tasks: [
+                    task('Create EUROM-WIN-GlobalDataCollection-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Include Windows diagnostic data, OneDrive Sync Health, Driver telemetry, and Health monitoring.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Assign to All Devices.', { rollout: 'Pending' }),
+                    task('Remove legacy profiles.', { rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day13',
+                day: 'Day 13',
+                title: 'USB & Device Control Consolidation',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Create a single authoritative USB restriction policy.',
+                success: ['Single USB control policy active.'],
+                tasks: [
+                    task('Retain Settings Catalog USB policy.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate approved USB device IDs.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Remove duplicate legacy USB policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate USB blocking and exclusions.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day14',
+                day: 'Day 14',
+                title: 'NCSC Baseline Migration',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Migrate legacy NCSC profiles into a modern Settings Catalog baseline.',
+                success: ['New modernized baseline active.'],
+                tasks: [
+                    task('Export existing NCSC settings.'),
+                    task('Create consolidated Settings Catalog baseline.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Remove overlapping or duplicate settings.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Assign globally.', { rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day15-21',
+                day: 'Days 15-21',
+                title: 'Cleanup Completion',
+                phase: 'Phase 1: macOS Readiness, Inventory & Policy Cleanup',
+                objective: 'Complete policy cleanup and finalize the simplified Intune configuration baseline.',
+                success: ['Optimized and simplified Intune environment.'],
+                tasks: [
+                    task('Continue profile consolidation.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate policy application.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Remove deprecated templates.', { rollout: 'Pending' }),
+                    task('Standardize naming conventions.'),
+                    task('Finalize cleanup documentation.')
+                ]
+            },
+            {
+                id: 'day22',
+                day: 'Day 22',
+                title: 'Endpoint Security Profile Design',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Design modern Endpoint Security profiles for BitLocker, Windows Firewall, and Windows Security Experience.',
+                success: ['Security-approved design document.'],
+                tasks: [
+                    task('Document existing BitLocker settings.'),
+                    task('Design modern Endpoint Security policies.'),
+                    task('Define encryption, firewall, and security settings.'),
+                    task('Identify pilot devices.')
+                ]
+            },
+            {
+                id: 'day23',
+                day: 'Day 23',
+                title: 'BitLocker Pilot Deployment',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Deploy BitLocker Endpoint Security profile to pilot devices.',
+                success: ['Successful pilot deployment.'],
+                tasks: [
+                    task('Create EUROM-ES-BitLocker-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Deploy to pilot group.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate encryption, recovery key escrow to Entra ID, and compliance.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day24-28',
+                day: 'Days 24-28',
+                title: 'Security Policy Rollout',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Roll out core endpoint security policies and prepare GPO auto-enrollment testing.',
+                success: ['Firewall and Windows Security Experience rollout validated.', 'Test OU prepared for GPO auto-enrollment.'],
+                tasks: [
+                    task('Deploy Firewall profile.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Deploy Windows Security Experience profile.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate endpoint security compliance.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Build test OU for GPO auto-enrollment.', { poc: 'Pending' })
+                ]
+            },
+            {
+                id: 'day29-30',
+                day: 'Days 29-30',
+                title: 'GPO Auto-Enrollment Pilot',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Pilot GPO-based Intune auto-enrollment.',
+                success: ['Successful GPO-based enrollment.'],
+                tasks: [
+                    task('Configure GPO to enable automatic MDM enrollment.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Apply auto-enrollment GPO to test OU.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate enrollment, Intune check-in, and SCCM coexistence.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day31-35',
+                day: 'Days 31-35',
+                title: 'RBAC & Administrative Security',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Implement least-privilege administration and scoped operational access.',
+                success: ['RBAC implemented.'],
+                tasks: [
+                    task('Design Intune RBAC model.'),
+                    task('Define least privilege roles.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Assign administrative scopes.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate Helpdesk permissions.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day36',
+                day: 'Day 36',
+                title: 'Delivery Optimization Global Rollout',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Expand Delivery Optimization globally.',
+                success: ['Delivery Optimization active globally.'],
+                tasks: [
+                    task('Deploy Delivery Optimization to all offices.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Configure bandwidth limits for constrained locations.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate peer-to-peer update sharing.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Confirm firewall requirements.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day37',
+                day: 'Day 37',
+                title: 'LAPS Production Rollout',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Deploy Microsoft LAPS organization-wide.',
+                success: ['LAPS active across all managed devices.'],
+                tasks: [
+                    task('Validate pilot deployment.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Configure password complexity, rotation schedule, and Entra ID backup.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Expand LAPS to All Devices.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Configure RBAC access to passwords.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day38-45',
+                day: 'Days 38-45',
+                title: 'App Control & Security Hardening',
+                phase: 'Phase 2: Endpoint Security, Enrollment & Administrative Security',
+                objective: 'Prepare App Control for Business and hardening controls for phased rollout.',
+                success: ['WDAC deployment strategy approved.'],
+                tasks: [
+                    task('Design App Control for Business (WDAC).'),
+                    task('Review software restriction policies.'),
+                    task('Prepare audit-mode deployment.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate application compatibility.')
+                ]
+            },
+            {
+                id: 'day46',
+                day: 'Day 46',
+                title: 'GPO Migration Preparation',
+                phase: 'Phase 3: Group Policy Migration',
+                objective: 'Prepare migration of legacy GPOs into Intune.',
+                success: ['Migration readiness validated.'],
+                tasks: [
+                    task('Review Group Policy Analytics.'),
+                    task('Export all GPO reports.'),
+                    task('Create migration tracking spreadsheet.'),
+                    task('Define naming standards.'),
+                    task('Build migration testing framework.')
+                ]
+            },
+            {
+                id: 'day47',
+                day: 'Day 47',
+                title: 'Device Management & DNS GPO Migration',
+                phase: 'Phase 3: Group Policy Migration',
+                objective: 'Pilot migration of core device management and DNS GPO settings into Intune.',
+                success: ['Successful pilot migration.'],
+                tasks: [
+                    task('Create EUROM-WIN-GPO-GlobalBaseline-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate Device Management settings and DNS suffix search list.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Deploy to pilot devices.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate DNS resolution.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day48-55',
+                day: 'Days 48-55',
+                title: 'GPO Migration',
+                phase: 'Phase 3: Group Policy Migration',
+                objective: 'Migrate major remaining GPO dependencies and replace unsupported items with Intune alternatives.',
+                success: ['Major GPO dependencies removed.'],
+                tasks: [
+                    task('Migrate Default User Policy.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate WebRoot policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate Auditing policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate Local group management.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Migrate Regional Wi-Fi and Radius policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Replace unsupported GPOs with Intune alternatives.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day56-60',
+                day: 'Days 56-60',
+                title: 'Migration Validation',
+                phase: 'Phase 3: Group Policy Migration',
+                objective: 'Validate migrated policies, remove redundant GPOs, and confirm stable Intune-based policy management.',
+                success: ['Stable Intune-based policy management.'],
+                tasks: [
+                    task('Validate migrated policies.'),
+                    task('Remove redundant GPOs.', { rollout: 'Pending' }),
+                    task('Confirm no policy conflicts.'),
+                    task('Update migration tracking.')
+                ]
+            },
+            {
+                id: 'day61-63',
+                day: 'Days 61-63',
+                title: 'Security Baseline Validation',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Validate Windows Security Baseline pilot deployment.',
+                success: ['Stable customized security baseline.'],
+                tasks: [
+                    task('Collect user feedback.'),
+                    task('Review Event Logs.'),
+                    task('Identify conflicts for VPN compatibility, SMB signing, NTLM restrictions, and script execution.'),
+                    task('Adjust baseline settings where required.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day64-71',
+                day: 'Days 64-71',
+                title: 'Feature Expansion & Stabilization',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Expand core features and stabilize the enterprise-wide deployment.',
+                success: ['Stable enterprise-wide deployment.'],
+                tasks: [
+                    task('Continue domain enrollment rollout.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Expand security baseline coverage.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Finalize App Control audit mode.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Complete operational documentation.')
+                ]
+            },
+            {
+                id: 'day72',
+                day: 'Day 72',
+                title: 'SCCM Dependency Removal Planning',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Formalize SCCM decommissioning and confirm GPO-based enrollment across all domains.',
+                success: ['SCCM retirement plan approved.', 'All domains confirmed on GPO auto-enrollment.'],
+                tasks: [
+                    task('Validate GPO auto-enrollment across all 11 domains.'),
+                    task('Define SCCM decommissioning sequence.'),
+                    task('Identify remaining Config Manager-managed devices.'),
+                    task('Document rollback procedures.')
+                ]
+            },
+            {
+                id: 'day73',
+                day: 'Day 73',
+                title: 'Compliance Policy Enhancement Deployment',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Deploy enhanced compliance policies aligned with ProArch recommendations.',
+                success: ['Updated compliance policies deployed.', 'Compliance baseline established.'],
+                tasks: [
+                    task('Update Windows compliance policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Enforce BitLocker, Firewall, Antivirus, TPM, and Secure Boot.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Configure grace periods and escalation process.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Validate macOS compliance separation.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day74',
+                day: 'Day 74',
+                title: 'Conditional Access Rationalization',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Enforce device compliance for Windows sign-ins.',
+                success: ['Conditional Access policy active in Report-Only mode.', 'No unintended user lockouts.'],
+                tasks: [
+                    task('Review all existing Conditional Access policies.'),
+                    task('Create EUROM-CA-Windows-DeviceCompliance-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Deploy initially in Report-Only mode.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Review and plan promotion of WIP policies.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Enable admin MFA policies.', { poc: 'Pending', rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day75-77',
+                day: 'Days 75-77',
+                title: 'Mobile App Protection Policies',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Deploy App Protection Policies for iOS and Android BYOD devices.',
+                success: ['App Protection Policies enforced.', 'Mobile Conditional Access active.'],
+                tasks: [
+                    task('Configure app protection requirements for PIN or biometrics, data protection, and approved app enforcement.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Create EUROM-APP-iOS-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Create EUROM-APP-Android-Prod.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Configure Conditional Access for mobile access.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Communicate rollout to users.', { rollout: 'Pending' })
+                ]
+            },
+            {
+                id: 'day78',
+                day: 'Day 78',
+                title: 'Azure VPN Profile Validation',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Validate remediation of Azure VPN profiles.',
+                success: ['VPN profiles functioning with zero major errors.'],
+                tasks: [
+                    task('Validate Tokyo VPN profile.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Resolve duplicate profile assignments.', { rollout: 'Pending' }),
+                    task('Validate all regional VPN profiles.', { poc: 'Pending', rollout: 'Pending' }),
+                    task('Document VPN management procedures.')
+                ]
+            },
+            {
+                id: 'day79-80',
+                day: 'Days 79-80',
+                title: 'Entra ID Stale Device Remediation',
+                phase: 'Phase 4: Optimization, Compliance, Mobile & Stabilization',
+                objective: 'Address stale Entra ID devices outside Intune cleanup scope.',
+                success: ['Stale device cleanup initiated.', 'Ongoing governance process established.'],
+                tasks: [
+                    task('Export stale device report.'),
+                    task('Coordinate cleanup with Active Directory teams.'),
+                    task('Remove inactive registered devices.', { rollout: 'Pending' }),
+                    task('Validate cleanup automation.'),
+                    task('Document ongoing cleanup process.')
+                ]
+            }
+        ];
+
+        function cloneData(data) {
+            return JSON.parse(JSON.stringify(data));
+        }
+
+        function ensureSchema(data) {
+            return data.map(day => ({
+                ...day,
+                tasks: day.tasks.map(item => ({ ...taskDefaults, ...item }))
+            }));
+        }
+
+        let state = ensureSchema(JSON.parse(localStorage.getItem(STORAGE_KEY)) || cloneData(trackerData));
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function escapeAttr(value) {
+            return escapeHtml(value);
+        }
+
+        function manualSave() {
+            const btn = document.getElementById('save-btn');
+            btn.classList.add('save-animation');
+            btn.innerHTML = '✅ Saved!';
+
+            updateOverallProgress();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+            setTimeout(() => {
+                btn.classList.remove('save-animation');
+                btn.innerHTML = '💾 Save Progress';
+            }, 2000);
+
+            renderSidebar();
+        }
+
+        function updateOverallProgress() {
+            let totalTasks = 0;
+            let completedTasks = 0;
+            state.forEach(day => {
+                day.tasks.forEach(item => {
+                    totalTasks++;
+                    if (item.status === 'Completed') completedTasks++;
+                });
+            });
+            const percentage = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            document.getElementById('overall-progress-bar').style.width = percentage + '%';
+            document.getElementById('overall-progress-text').innerText = percentage + '%';
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('days-list');
+            container.innerHTML = '';
+
+            state.forEach(day => {
+                const completedCount = day.tasks.filter(item => item.status === 'Completed').length;
+                const totalCount = day.tasks.length;
+                const isFullyDone = completedCount === totalCount;
+                const isPartial = completedCount > 0 && !isFullyDone;
+
+                const btn = document.createElement('button');
+                btn.id = `nav-${day.id}`;
+                btn.className = 'sidebar-item day-nav';
+                btn.onclick = () => showDay(day.id);
+
+                btn.innerHTML = `
+                    <div class="day-nav-left">
+                        <div class="status-dot ${isFullyDone ? 'done' : (isPartial ? 'partial' : '')}"></div>
+                        <div class="day-nav-text">
+                            <span class="day-nav-day">${escapeHtml(day.day)}</span>
+                            <span class="day-nav-title">${escapeHtml(day.title)}</span>
+                        </div>
+                    </div>
+                    <span class="day-count">${completedCount}/${totalCount}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function getAssignmentCounts() {
+            const counts = {};
+            state.forEach(day => {
+                day.tasks.forEach(item => {
+                    const assignee = (item.assignedTo || '').trim() || 'Unassigned';
+                    counts[assignee] = (counts[assignee] || 0) + 1;
+                });
+            });
+            return counts;
+        }
+
+        function showDashboard() {
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-dashboard').classList.add('active');
+            document.getElementById('current-view-title').innerText = 'Master Dashboard';
+            document.getElementById('current-view-subtitle').innerText = 'Overview of ProArch implementation phases, milestones and task ownership';
+
+            const content = document.getElementById('content-area');
+            const phases = {};
+            state.forEach(day => {
+                const phaseName = day.phase.split(':')[0];
+                if (!phases[phaseName]) phases[phaseName] = [];
+                phases[phaseName].push(day);
+            });
+
+            const totalTasks = state.reduce((acc, day) => acc + day.tasks.length, 0);
+            const completedTasks = state.reduce((acc, day) => acc + day.tasks.filter(item => item.status === 'Completed').length, 0);
+            const inProgressTasks = state.reduce((acc, day) => acc + day.tasks.filter(item => item.status === 'Work in Progress' || item.status === 'Started').length, 0);
+            const notStartedTasks = state.reduce((acc, day) => acc + day.tasks.filter(item => item.status === 'Not Started').length, 0);
+            const assignmentCounts = getAssignmentCounts();
+            const assignedPeople = Object.keys(assignmentCounts).filter(name => name !== 'Unassigned').length;
+            const assigneeRows = Object.entries(assignmentCounts)
+                .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+            let html = `
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-label">Total Tasks</div>
+                        <div class="stat-value">${totalTasks}</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-label">Completed</div>
+                        <div class="stat-value green">${completedTasks}</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-label">In Progress</div>
+                        <div class="stat-value blue">${inProgressTasks}</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-label">Not Started</div>
+                        <div class="stat-value muted">${notStartedTasks}</div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-label">Assigned People</div>
+                        <div class="stat-value orange">${assignedPeople}</div>
+                    </div>
+                </div>
+
+                <div class="card dashboard-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2 class="panel-title">Task Ownership</h2>
+                            <p class="panel-note">Counts are grouped by the Assigned To field on each task.</p>
+                        </div>
+                        <span class="eyebrow">${totalTasks} Tasks</span>
+                    </div>
+                    <div class="assignee-grid">
+                        ${assigneeRows.map(([name, count]) => {
+                            const pct = totalTasks ? Math.round((count / totalTasks) * 100) : 0;
+                            return `
+                                <div class="assignee-card">
+                                    <div class="assignee-row">
+                                        <span class="assignee-name" title="${escapeAttr(name)}">${escapeHtml(name)}</span>
+                                        <span class="assignee-count">${count}</span>
+                                    </div>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" style="width: ${pct}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            for (const phase in phases) {
+                const phaseTasks = phases[phase].flatMap(day => day.tasks);
+                const phaseCompleted = phaseTasks.filter(item => item.status === 'Completed').length;
+                const phaseTotal = phaseTasks.length;
+                const phasePercent = phaseTotal ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+
+                html += `
+                    <section class="phase-section">
+                        <div class="phase-heading">
+                            <h3 class="phase-title">${escapeHtml(phase)}</h3>
+                            <div class="phase-progress">
+                                <span class="eyebrow">${phasePercent}% Complete</span>
+                                <div class="progress-track"><div class="progress-fill" style="width: ${phasePercent}%"></div></div>
+                            </div>
+                        </div>
+                        <div class="day-card-grid">
+                            ${phases[phase].map(day => {
+                                const done = day.tasks.filter(item => item.status === 'Completed').length;
+                                const total = day.tasks.length;
+                                const pct = total ? Math.round((done / total) * 100) : 0;
+                                return `
+                                    <button onclick="showDay('${day.id}')" class="day-card">
+                                        <div>
+                                            <div class="day-card-top">
+                                                <span class="day-pill">${escapeHtml(day.day)}</span>
+                                                <span class="pct-text">${pct}%</span>
+                                            </div>
+                                            <h4 class="day-card-title">${escapeHtml(day.title)}</h4>
+                                        </div>
+                                        <div class="progress-track"><div class="progress-fill" style="width: ${pct}%"></div></div>
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                    </section>
+                `;
+            }
+
+            html += `
+                <div class="card dashboard-panel" style="margin-top: 54px;">
+                    <div class="panel-header">
+                        <div>
+                            <h2 class="panel-title">PDF Naming Standards</h2>
+                            <p class="panel-note">Reference standards captured from the ProArch implementation plan.</p>
+                        </div>
+                    </div>
+                    <div class="assignee-grid">
+                        <div class="assignee-card"><strong>Configuration Profiles</strong><p class="panel-note">EUROM-WIN-[Function]-Prod<br>EUROM-MAC-[Function]-Prod</p></div>
+                        <div class="assignee-card"><strong>Endpoint Security Profiles</strong><p class="panel-note">EUROM-SEC-[Function]-Prod</p></div>
+                        <div class="assignee-card"><strong>Pilot Policies</strong><p class="panel-note">EUROM-[Function]-Pilot</p></div>
+                        <div class="assignee-card"><strong>Groups</strong><p class="panel-note">EUROM-[Purpose]-Group</p></div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        function showDay(dayId) {
+            const day = state.find(item => item.id === dayId);
+            if (!day) return;
+
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            const navItem = document.getElementById(`nav-${dayId}`);
+            if (navItem) navItem.classList.add('active');
+            document.getElementById('current-view-title').innerText = day.title;
+            document.getElementById('current-view-subtitle').innerText = `${day.day} • ${day.phase}`;
+
+            const content = document.getElementById('content-area');
+            const objectiveHtml = day.objective ? `
+                <div class="card info-card">
+                    <span class="eyebrow">Objective</span>
+                    <p>${escapeHtml(day.objective)}</p>
+                </div>
+            ` : '';
+            const successHtml = Array.isArray(day.success) && day.success.length ? `
+                <div class="card info-card">
+                    <span class="eyebrow">Success Criteria</span>
+                    <ul>${day.success.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+                </div>
+            ` : '';
+
+            const html = `
+                <div class="info-grid">
+                    ${objectiveHtml}
+                    ${successHtml}
+                </div>
+                <div class="card table-shell custom-scrollbar">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 170px;">Task Status</th>
+                                <th>Task Description</th>
+                                <th style="width: 210px;">Assigned To</th>
+                                <th style="width: 160px;">CR Number</th>
+                                <th style="width: 160px;">POC Status</th>
+                                <th style="width: 160px;">Rollout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${day.tasks.map((item, idx) => `
+                                <tr class="${item.status === 'Completed' ? 'completed-row' : ''}">
+                                    <td>
+                                        <select onchange="updateField('${dayId}', ${idx}, 'status', this.value)" class="field-small ${getStatusBadgeClass(item.status)}">
+                                            <option value="Not Started" ${item.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                                            <option value="Started" ${item.status === 'Started' ? 'selected' : ''}>Started</option>
+                                            <option value="Work in Progress" ${item.status === 'Work in Progress' ? 'selected' : ''}>WIP</option>
+                                            <option value="Completed" ${item.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="task-text">${escapeHtml(item.step)}</div>
+                                        <span class="sop-pill">SOP: ${escapeHtml(item.sop)}</span>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                            value="${escapeAttr(item.assignedTo || 'Unassigned')}"
+                                            onchange="updateField('${dayId}', ${idx}, 'assignedTo', this.value)"
+                                            placeholder="Owner name"
+                                            class="input-small">
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                            value="${escapeAttr(item.cr)}"
+                                            onchange="updateField('${dayId}', ${idx}, 'cr', this.value)"
+                                            placeholder="CR-XXXXX"
+                                            class="input-small">
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('${dayId}', ${idx}, 'poc', this.value)" class="field-small ${getStatusColor(item.poc)}">
+                                            <option value="Pending" ${item.poc === 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="Done" ${item.poc === 'Done' ? 'selected' : ''}>Done</option>
+                                            <option value="N/A" ${item.poc === 'N/A' ? 'selected' : ''}>N/A</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateField('${dayId}', ${idx}, 'rollout', this.value)" class="field-small ${getStatusColor(item.rollout)}">
+                                            <option value="Pending" ${item.rollout === 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="Done" ${item.rollout === 'Done' ? 'selected' : ''}>Done</option>
+                                            <option value="N/A" ${item.rollout === 'N/A' ? 'selected' : ''}>N/A</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            content.innerHTML = html;
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === 'Completed') return 'status-badge-completed';
+            if (status === 'Work in Progress') return 'status-badge-wip';
+            if (status === 'Started') return 'status-badge-started';
+            return 'status-badge-notstarted';
+        }
+
+        function getStatusColor(status) {
+            if (status === 'Done') return 'text-done';
+            if (status === 'Pending') return 'text-pending';
+            return 'text-na';
+        }
+
+        function updateField(dayId, taskIdx, field, value) {
+            const day = state.find(item => item.id === dayId);
+            if (!day || !day.tasks[taskIdx]) return;
+            day.tasks[taskIdx][field] = field === 'assignedTo' ? ((value || '').trim() || 'Unassigned') : value;
+            if (field === 'status') showDay(dayId);
+        }
+
+        function resetData() {
+            if (confirm('Reset all progress? This will clear all status, CR, POC, rollout and assigned-to updates.')) {
+                state = ensureSchema(cloneData(trackerData));
+                localStorage.removeItem(STORAGE_KEY);
+                renderSidebar();
+                showDashboard();
+                updateOverallProgress();
+            }
+        }
+
+        function exportToExcel() {
+            const detailedData = [];
+            state.forEach(day => {
+                day.tasks.forEach(item => {
+                    detailedData.push({
+                        Day: day.day,
+                        Phase: day.phase,
+                        Title: day.title,
+                        Task: item.step,
+                        Status: item.status,
+                        'Assigned To': item.assignedTo || 'Unassigned',
+                        'CR Number': item.cr,
+                        'POC Status': item.poc,
+                        'Rollout Status': item.rollout
+                    });
+                });
+            });
+
+            if (window.XLSX) {
+                const wb = XLSX.utils.book_new();
+                const wsDetailed = XLSX.utils.json_to_sheet(detailedData);
+                XLSX.utils.book_append_sheet(wb, wsDetailed, 'Implementation Progress');
+
+                const ownershipData = Object.entries(getAssignmentCounts()).map(([assignee, count]) => ({
+                    'Assigned To': assignee,
+                    'Task Count': count
+                }));
+                const wsOwnership = XLSX.utils.json_to_sheet(ownershipData);
+                XLSX.utils.book_append_sheet(wb, wsOwnership, 'Task Ownership');
+
+                XLSX.writeFile(wb, 'Euromonitor_Intune_Tracker.xlsx');
+                return;
+            }
+
+            const csv = toCsv(detailedData);
+            downloadBlob(csv, 'Euromonitor_Intune_Tracker.csv', 'text/csv;charset=utf-8;');
+            alert('SheetJS was not available, so a CSV export was downloaded instead. Open the file in Excel.');
+        }
+
+        function toCsv(rows) {
+            if (!rows.length) return '';
+            const headers = Object.keys(rows[0]);
+            const escapeCsv = value => `"${String(value ?? '').replace(/"/g, '""')}"`;
+            return [headers.map(escapeCsv).join(','), ...rows.map(row => headers.map(header => escapeCsv(row[header])).join(','))].join('\n');
+        }
+
+        function downloadBlob(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        renderSidebar();
+        showDashboard();
+        updateOverallProgress();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0c0876ed86f897b',t:'MTc4MTUxNTU0Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
